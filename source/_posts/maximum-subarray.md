@@ -4,6 +4,7 @@ date: 2019-12-12 19:49:04
 tags: 
     - N3:LeetCode
 categories: [Algorithm]
+mathjax: true
 ---
 
 做题顺序：[azl397985856 - leetcode 经典题目的解析](https://github.com/azl397985856/leetcode#leetcode-%E7%BB%8F%E5%85%B8%E9%A2%98%E7%9B%AE%E7%9A%84%E8%A7%A3%E6%9E%90)  
@@ -126,6 +127,22 @@ TODO
 我对这位答主的回答稍作了调整，因为状态的推算可以得出状态转移方程，但是得出状态转移方程以后，最后并不一定就得到了所求解。所以我将“设计转移”移到了第二条上。
 
 以本题为例：  
-首先是设计状态：记`Sigma(i)`为到当前位置 `i` 的子序列和，那么初始化工作就是`Sigma(0) = nums[0]`；  
-其次，状态i从哪里推过来？`Sigma(i)`的计算方法：当`Sigma(i-1)>0`时，`Sigma(i)=Sigma(i-1)+nums[i]`，否则`Sigma(i)=nums[i]`；对前面的两个式子进行简化，得到状态转移方程：`Sigma(i)=max(Sigma(i-1)+nums[i],nums[i])`。  
-最后，开头说过，`Sigma(i)`为到当前位置 `i` 的子序列和，但是并不一定是全局的最大子序列和，所以需要始终保留一个全局的最大值，使每个产生的`Sigma(i)`与之比较。  
+首先是设计状态：  
+记  
+$$\sum_{x = 0}^{i}nums\left [ x \right ]$$  
+为到当前位置 `i` 的子序列和，那么初始化工作就是  
+$$\sum_{x = 0}^{i}nums\left [ x \right ] = nums\left [ i \right ]$$  
+
+其次，状态i从哪里推过来？  
+当
+$$\sum_{x = 0}^{i-1}nums\left [ x \right ]>0$$  
+$$\sum_{x = 0}^{i}nums\left [ x \right ]=\sum_{x = 0}^{i-1}nums\left [ x \right ]+nums\left [ i \right ]$$  
+否则  
+$$\sum_{x = 0}^{i}nums\left [ x \right ] = nums\left [ i \right ]$$  
+对前面的两个式子进行简化，得到状态转移方程：  
+$$\sum_{x = 0}^{i}nums\left [ x \right ]=max\left \{ \sum_{x = 0}^{i-1}nums\left [ x \right ]+nums\left [ i \right ],nums\left [ i \right ] \right \}$$  
+最后，开头说过，
+$$\sum_{x = 0}^{i}nums\left [ x \right ]$$  
+为到当前位置 `i` 的子序列和，但是并不一定是全局的最大子序列和，所以需要始终保留一个全局的最大值，使每个产生的  
+$$\sum_{x = 0}^{i}nums\left [ x \right ]$$  
+与之比较。  
