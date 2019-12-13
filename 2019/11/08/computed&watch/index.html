@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fav.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fav.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Cathandra's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="有些问题本不是问题，不看文档，于是也就成了问题。还是要把那句老生常谈的话甩自己脸上：有问题查文档。   然后试着总结下二者的区别。直觉上来说，computed用于处理依赖的值产生变化而变化的情况；而watch用于监听属性值变化并完成后续的逻辑。（从这种说法可以看出来，这两者有时候被混淆，就是因为watch可以完成所有computed可以完成的功能。）   此外computed不能完成异步操作，但是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue的计算属性和侦听属性">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;08&#x2F;computed&amp;watch&#x2F;index.html">
+<meta property="og:site_name" content="Cathandra&#39;s Blog">
+<meta property="og:description" content="有些问题本不是问题，不看文档，于是也就成了问题。还是要把那句老生常谈的话甩自己脸上：有问题查文档。   然后试着总结下二者的区别。直觉上来说，computed用于处理依赖的值产生变化而变化的情况；而watch用于监听属性值变化并完成后续的逻辑。（从这种说法可以看出来，这两者有时候被混淆，就是因为watch可以完成所有computed可以完成的功能。）   此外computed不能完成异步操作，但是">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-11-08T07:43:42.000Z">
+<meta property="article:modified_time" content="2019-12-13T07:35:29.868Z">
+<meta property="article:author" content="Cathandra">
+<meta property="article:tag" content="N3:Vue.js">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/11/08/computed&watch/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Vue的计算属性和侦听属性 | Cathandra's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cathandra's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/08/computed&watch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Cathandra">
+      <meta itemprop="description" content="GIVE IT ALL YOU'VE GOT.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cathandra's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue的计算属性和侦听属性
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-11-08 15:43:42" itemprop="dateCreated datePublished" datetime="2019-11-08T15:43:42+08:00">2019-11-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Front-End/" itemprop="url" rel="index">
+                    <span itemprop="name">Front-End</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>有些问题本不是问题，不看文档，于是也就成了问题。<br>还是要把那句老生常谈的话甩自己脸上：<strong>有问题查文档</strong>。  </p>
+<p>然后试着总结下二者的区别。<br>直觉上来说，<code>computed</code>用于处理依赖的值产生变化而变化的情况；而<code>watch</code>用于监听属性值变化并完成后续的逻辑。<br>（从这种说法可以看出来，这两者有时候被混淆，就是因为<code>watch</code>可以完成所有<code>computed</code>可以完成的功能。）  </p>
+<p>此外<code>computed</code>不能完成异步操作，但是<code>watch</code>可以。  </p>
+<a id="more"></a>
+<h2 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h2><p>初接触<code>computed</code>时会和最早学vue时看到的双向绑定案例想到一起去，但是出于简化<code>template</code>的结构和计算逻辑的考虑，使用<code>computed</code>去操作数据是有必要的。  </p>
+<p>一个简单的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>    &lt;p&gt;<br>      Who are you?<br>    &lt;&#x2F;p&gt;<br>    &lt;br&gt;<br>    first name:&lt;input v-model&#x3D;&quot;firstName&quot;&#x2F;&gt;<br>    last name:&lt;input v-model&#x3D;&quot;lastName&quot;&#x2F;&gt;<br>    &lt;p&gt;Hello, &#123;&#123;fullName&#125;&#125;&lt;&#x2F;p&gt;<br>&lt;&#x2F;template&gt;<br><br>&lt;script&gt;<br>export default &#123;<br>  data() &#123;<br>    return &#123;<br>      firstName:&#39;&#39;,<br>      lastName:&#39;&#39;,<br>    &#125;;<br>  &#125;,<br>  computed: &#123;<br>    fullName: &#123;<br>        get:function() &#123;<br>            return this.firstName + &#39; &#39; + this.lastName;<br>        &#125;<br>    &#125;<br>  &#125;<br>&#125;;<br>&lt;&#x2F;script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>比如这里我在first name的<code>input</code>框中输入’Cathy’，在last name框中输入’Tao’，那么下面会随着我输入出现’Hello, Cathy Tao’。  </p>
+<h3 id="computed-getter"><a href="#computed-getter" class="headerlink" title="computed:getter"></a>computed:getter</h3><p>本质上，刚才的computed相当于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs vue">computed: &#123;<br>    fullName: &#123;<br>        get:function() &#123;<br>            return this.firstName + &#39; &#39; + this.lastName;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="computed-setter"><a href="#computed-setter" class="headerlink" title="computed:setter"></a>computed:setter</h3><p>有<code>getter</code>当然就也有<code>setter</code>。但是，set设置属性，并不是修改计算属性，而是<strong>修改它的依赖</strong>。<br>对上述例子进行改造：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>    &lt;p&gt;<br>      Who are you?<br>    &lt;&#x2F;p&gt;<br>    &lt;br&gt;<br>    first name:&lt;input v-model&#x3D;&quot;firstName&quot;&#x2F;&gt;<br>    last name:&lt;input v-model&#x3D;&quot;lastName&quot;&#x2F;&gt;<br>    &lt;br&gt;<br>    &lt;!-- Add Anonymous --&gt;<br>    &lt;button @click&#x3D;&quot;setAnonymous&quot;&gt;Anonymous&lt;&#x2F;button&gt;<br>    &lt;p&gt;Hello, &#123;&#123;fullName&#125;&#125;&lt;&#x2F;p&gt;<br>&lt;&#x2F;template&gt;<br><br>&lt;script&gt;<br>export default &#123;<br>  data() &#123;<br>    return &#123;<br>      firstName:&#39;&#39;,<br>      lastName:&#39;&#39;,<br>    &#125;;<br>  &#125;,<br>  methods: &#123;<br>    &#x2F;&#x2F;add setAnonymous<br>    setAnonymous() &#123;<br>      this.fullName &#x3D; &quot;A Nobody&quot;<br>    &#125;<br>  &#125;,<br>  computed: &#123;<br>      fullName:&#123;<br>        get: function() &#123;<br>          return this.firstName + &#39; &#39; + this.lastName;<br>        &#125;,<br>        &#x2F;&#x2F; add setter<br>        set: function(originFullName) &#123;<br>          let names &#x3D; originFullName.split(&#39; &#39;);<br>          this.firstName &#x3D; names[0];<br>          this.lastName &#x3D; names[1];<br>        &#125;<br>    &#125;<br>  &#125;<br>&#125;;<br>&lt;&#x2F;script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这个例子主要是加入了一个Anonymous按钮，点击这个按钮会调用<code>setAnonymous</code>方法，<code>fullName</code>会被修改为’A Nobody’。<br>computed的<code>setter</code>就将<code>fullName</code>拆开，把<code>firstName</code>和<code>lastName</code>改为分别的值。<br>这样，一点击Anonymous按钮，输入框中的值就会变为’A’和’Nobody’。</p>
+<h2 id="侦听属性"><a href="#侦听属性" class="headerlink" title="侦听属性"></a>侦听属性</h2><h3 id="常规用法"><a href="#常规用法" class="headerlink" title="常规用法"></a>常规用法</h3><p>回到最开始的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>    &lt;p&gt;<br>      Who are you?<br>    &lt;&#x2F;p&gt;<br>    &lt;br&gt;<br>    first name:&lt;input v-model&#x3D;&quot;firstName&quot;&#x2F;&gt;<br>    last name:&lt;input v-model&#x3D;&quot;lastName&quot;&#x2F;&gt;<br>    &lt;p&gt;Hello, &#123;&#123;fullName&#125;&#125;&lt;&#x2F;p&gt;<br>&lt;&#x2F;template&gt;<br><br>&lt;script&gt;<br>export default &#123;<br>  data() &#123;<br>    return &#123;<br>      firstName:&#39;&#39;,<br>      lastName:&#39;&#39;,<br>      fullName:&#39;&#39;<br>    &#125;;<br>  &#125;,<br>  watch: &#123;<br>    firstName() &#123;<br>      this.fullName &#x3D; this.firstName + &#39; &#39; + this.lastName;<br>    &#125;,<br>    lastName() &#123;<br>      this.fullName &#x3D; this.firstName + &#39; &#39; + this.lastName;<br>    &#125;<br>  &#125;<br>&#125;;<br>&lt;&#x2F;script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这里使用watch监听了<code>firstName</code>和<code>lastName</code>，并在这两者变化时立即改变<code>fullName</code>。<br>可以看出，watch监听的值是主动改变而非被动改变的值，而computed是计算被动改变的值。</p>
+<h3 id="回调用法"><a href="#回调用法" class="headerlink" title="回调用法"></a>回调用法</h3><p>把刚才的例子稍作修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>    &lt;p&gt;<br>      Who are you?<br>    &lt;&#x2F;p&gt;<br>    &lt;br&gt;<br>    first name:&lt;input v-model&#x3D;&quot;firstName&quot;&#x2F;&gt;<br>    last name:&lt;input v-model&#x3D;&quot;lastName&quot;&#x2F;&gt;<br>    &lt;p&gt;Hello, &#123;&#123;fullName&#125;&#125;&lt;&#x2F;p&gt;<br>&lt;&#x2F;template&gt;<br><br>&lt;script&gt;<br>export default &#123;<br>  data() &#123;<br>    return &#123;<br>      firstName:&#39;&#39;,<br>      lastName:&#39;&#39;,<br>      fullName:&#39;&#39;<br>    &#125;;<br>  &#125;,<br>  watch: &#123;<br>    firstName() &#123;<br>      this.fullName &#x3D; this.firstName + &quot; &quot; + this.lastName;<br>    &#125;,<br>    lastName: &#123;<br>      handler: function() &#123;<br>        this.fullName &#x3D; this.firstName + &quot; &quot; + this.lastName;<br>        this.fullName +&#x3D; &quot;!&quot;;<br>      &#125;,<br>      deep: true<br>    &#125;<br>  &#125;<br>&#125;;<br>&lt;&#x2F;script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>emmm这个例子其实不太明显，其实想要表达lastName的内部值可以被监听，一旦产生变化，会在最后插入标点。  </p>
+<blockquote>
+<p>该回调会在任何被侦听的对象的 property 改变时被调用，不论其被嵌套多深。</p>
+</blockquote>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://cn.vuejs.org/v2/guide/computed.html" target="_blank" rel="noopener">计算属性和侦听器 - Vue.js</a>  </li>
+<li><a href="https://cn.vuejs.org/v2/api/#computed" target="_blank" rel="noopener">API选项/数据:computed - Vue.js</a>  </li>
+<li><a href="https://cn.vuejs.org/v2/api/#watch" target="_blank" rel="noopener">API选项/数据:watch - Vue.js</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/N3-Vue-js/" rel="tag"># N3:Vue.js</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/08/POI101.2/" rel="next" title="Person of Interest S01E01 (2)">
+                  <i class="fa fa-chevron-left"></i> Person of Interest S01E01 (2)
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/11/16/relevantImport/" rel="prev" title="Python相对导入">
+                  Python相对导入 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#计算属性"><span class="nav-number">1.</span> <span class="nav-text">计算属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#computed-getter"><span class="nav-number">1.1.</span> <span class="nav-text">computed:getter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#computed-setter"><span class="nav-number">1.2.</span> <span class="nav-text">computed:setter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#侦听属性"><span class="nav-number">2.</span> <span class="nav-text">侦听属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常规用法"><span class="nav-number">2.1.</span> <span class="nav-text">常规用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回调用法"><span class="nav-number">2.2.</span> <span class="nav-text">回调用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cathandra"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Cathandra</p>
+  <div class="site-description" itemprop="description">GIVE IT ALL YOU'VE GOT.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/CATHANDRA" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;CATHANDRA" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cathandra@163.com" title="E-Mail &amp;rarr; mailto:cathandra@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cathandra</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '9cd5b6812247a5d05a58',
+      clientSecret: 'f88f192ed7d8d7199dcc9b59e84fd53e85320362',
+      repo: 'Talk',
+      owner: 'Cathandra',
+      admin: ['Cathandra'],
+      id: '1d43eceb468d8192b4ceae640db71306',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
