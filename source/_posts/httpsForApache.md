@@ -1,7 +1,7 @@
 ---
 title: Apache配置https访问及跳转
 date: 2019-03-24 22:37:35
-categories: [Linux]
+categories: [Back-End]
 ---
 
 # Apache配置https访问及跳转

@@ -1,7 +1,7 @@
 ---
 title: Java初学习之 类与接口、常用实用类
 date: 2017-05-19 00:00:01 #文章生成时间，一般不改，当然也可以任意修改
-categories: [JAVA]
+categories: [Back-End]
 ---
 Java初学习的课堂笔记。
 
