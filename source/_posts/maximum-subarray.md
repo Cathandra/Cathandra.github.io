@@ -140,7 +140,7 @@ $$\sum_{x = 0}^{i}nums\left [ x \right ]=\sum_{x = 0}^{i-1}nums\left [ x \right 
 否则  
 $$\sum_{x = 0}^{i}nums\left [ x \right ] = nums\left [ i \right ]$$  
 对前面的两个式子进行简化，得到状态转移方程：  
-$$\sum_{x = 0}^{i}nums\left [ x \right ]=max\left \{ \sum_{x = 0}^{i-1}nums\left [ x \right ]+nums\left [ i \right ],nums\left [ i \right ] \right \}$$  
+$$\sum_{x = 0}^{i}nums\left [ x \right ]=max \left \{ \sum_{x = 0}^{i-1}nums[ x ]+nums[ i ], nums[ i ] \right \}$$  
 最后，开头说过，
 $$\sum_{x = 0}^{i}nums\left [ x \right ]$$  
 为到当前位置 `i` 的子序列和，但是并不一定是全局的最大子序列和，所以需要始终保留一个全局的最大值，使每个产生的  
