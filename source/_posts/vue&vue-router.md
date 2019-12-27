@@ -1,7 +1,8 @@
 ---
-layout:     post
 title:      "vue&vue-router"
 date:       2019-04-28
+tags: 
+    - Vue.js
 categories: [Front-End]
 ---
 

@@ -1,7 +1,8 @@
 ---
-layout:     post
 title:      "vuex详解"
 date:       2019-05-12
+tags: 
+    - Vue.js
 categories: [Front-End]
 ---
 

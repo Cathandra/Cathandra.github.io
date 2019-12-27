@@ -1,7 +1,8 @@
 ---
-layout:     post
 title:      "JavaScript作用域与闭包"
 date:       2019-04-07
+tags: 
+    - JavaScript
 categories: [Front-End]
 ---
 
