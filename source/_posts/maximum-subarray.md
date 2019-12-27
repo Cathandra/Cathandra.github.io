@@ -101,12 +101,24 @@ class Solution {
 ### C++实现  
 
 ```C++
-TODO
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int sum = 0;
+        int maxnum = nums[0];
+
+        for(int i = 0; i < nums.size(); i++){
+            if (sum > 0) {
+                sum += nums[i];
+            }else {
+                sum = nums[i];
+            }
+            maxnum = max(sum, maxnum);
+        }
+        return maxnum;
+    }
+};
 ```
-
-#### Tips for `++`  
-
-TODO
 
 ## 思想
 
