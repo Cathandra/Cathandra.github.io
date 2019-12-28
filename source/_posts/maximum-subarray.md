@@ -145,7 +145,7 @@ $$\sum_{x = 0}^{i}nums\left [ x \right ]$$
 为到当前位置 `i` 的子序列和，那么初始化工作就是  
 $$\sum_{x = 0}^{i}nums\left [ x \right ] = nums\left [ i \right ]$$  
 
-其次，状态i从哪里推过来？  
+其次，状态`i`从哪里推过来？  
 当
 $$\sum_{x = 0}^{i-1}nums\left [ x \right ]>0$$  
 $$\sum_{x = 0}^{i}nums\left [ x \right ]=\sum_{x = 0}^{i-1}nums\left [ x \right ]+nums\left [ i \right ]$$  
