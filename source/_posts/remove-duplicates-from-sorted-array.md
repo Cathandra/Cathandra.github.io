@@ -11,8 +11,6 @@ categories: [Algorithm]
 题目：[26. 删除排序数组中的重复项](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/)  
 解析指路：[azl397985856 - 26.remove-duplicates-from-sorted-array.md](https://github.com/azl397985856/leetcode/blob/master/problems/26.remove-duplicates-from-sorted-array.md)
 
-<!-- More -->
-
 ## 题目
 
 >给定一个排序数组，你需要在**原地**删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。
@@ -52,6 +50,8 @@ for (int i = 0; i < len; i++) {
     print(nums[i]);
 }
 ```
+
+<!-- More -->
 
 ## 分析
 
