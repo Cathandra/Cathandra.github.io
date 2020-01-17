@@ -4,6 +4,4 @@ title: About
 comments: false
 ---
 
-<center>为之则易，不为则难。</center>
-<center>GIVE IT ALL YOU'VE GOT.</center>
-
+即使慢，驰而不息，纵令落后，纵令失败，但一定可以达到他所向往的目标。
