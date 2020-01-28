@@ -13,6 +13,8 @@ categories: [Front-End]
 
 2. 使用vue-axios组件；
 
+<!-- More -->
+
 ## 直接使用原生axios
 
 ### 安装axios
@@ -33,7 +35,7 @@ yarn add axios
 
 首先，axios是不能够像普通的[vue-resource](https://cn.vuejs.org/v2/guide/plugins.html)插件一样，通过在主入口文件引入`import VueResource from vue-resource`后就使用`Vue.use(VueResource)`全局引用。
 
-#### 在页面应用
+#### 在页面引用
 
 所以在使用页面不多的情况下，可以直接在相应页面使用。
 在相应页面的`<script></script>`中引入：
