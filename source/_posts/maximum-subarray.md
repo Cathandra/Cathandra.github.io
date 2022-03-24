@@ -2,7 +2,7 @@
 title: "最大子序和"
 date: 2019-12-12 19:49:04
 tags: 
-    - N3:LeetCode
+    - leetcode
 categories: [Algorithm]
 mathjax: true
 ---

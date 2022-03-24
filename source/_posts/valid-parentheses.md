@@ -2,7 +2,7 @@
 title: "有效的括号"
 date: 2019-12-08 16:12:50
 tags: 
-    - N3:LeetCode
+    - leetcode
 categories: [Algorithm]
 ---
 

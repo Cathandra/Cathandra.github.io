@@ -3,7 +3,7 @@ layout: post
 title: "整数反转"
 date: 2021-01-12 14:27:25
 tags:
-	- N3:LeetCode
+	- leetcode
 categories: [Algorithm]
 ---
 
@@ -97,3 +97,4 @@ def reverse(self, x: int) -> int:
 Java中，三目运算符是`（判断语句）?（语句为真的返回结果）:（语句为假的返回结果）`；在Python中是`（语句为真的返回结果）if（判断语句）else（语句为假的返回结果）`。
 
 > 你才学了多少，就能把不同语言的语法混在一起了……
+

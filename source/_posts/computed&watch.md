@@ -2,7 +2,7 @@
 title: "Vue的计算属性和侦听属性"
 date: 2019-11-08 15:43:42
 tags: 
-    - N3:Vue.js
+    - vue
 categories: [Front-End]
 ---
 有些问题本不是问题，不看文档，于是也就成了问题。  

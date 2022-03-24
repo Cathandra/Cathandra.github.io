@@ -2,7 +2,7 @@
 title: Spring 初学习
 date: 2017-10-22 21:41:52 #文章生成时间，一般不改，当然也可以任意修改
 tags: 
-    - Spring
+    - spring
 categories: [Back-End]
 ---
 Spring学习笔记。

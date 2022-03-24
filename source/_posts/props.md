@@ -3,7 +3,7 @@ layout: post
 title: Vue的Prop属性
 date: 2020-01-16 19:50:11
 tags:
-    - N3:Vue.js
+    - vue
 categories: [Front-End]
 ---
 复读：有些问题本不是问题，不看文档，于是也就成了问题。  

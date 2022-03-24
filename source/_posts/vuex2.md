@@ -2,7 +2,7 @@
 title:      "vuex详解"
 date:       2019-05-12
 tags: 
-    - Vue.js
+    - vue
 categories: [Front-End]
 ---
 

@@ -2,7 +2,7 @@
 title:      "vuex"
 date:       2019-05-05
 tags: 
-    - Vue.js
+    - vue
 categories: [Front-End]
 ---
 

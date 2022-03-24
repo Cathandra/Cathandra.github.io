@@ -2,7 +2,7 @@
 title: "删除排序数组中的重复项"
 date: 2019-12-09 19:52:02
 tags: 
-    - N3:LeetCode
+    - leetcode
 categories: [Algorithm]
 ---
 
