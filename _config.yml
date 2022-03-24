@@ -101,7 +101,7 @@ plugins: hexo-generator-feed
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: http://github.com/Cathandra/Cathandra.github.io.git
+  repo: git@github.com:Cathandra/Cathandra.github.io.git
   branch: master
 
 search:
