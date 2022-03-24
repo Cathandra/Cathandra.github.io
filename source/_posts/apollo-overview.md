@@ -38,7 +38,7 @@ categories: []
 
 技术框架包括四个层面：参考车辆平台 (Reference Vehicle Platform) 、参考硬件平台 (Reference Hardware Platform)、开源软件平台(Open Software Platform) 、云服务平台 (Cloud Service Platform)。
 
-![Apollo自动驾驶架构](https://mmbiz.qpic.cn/mmbiz_jpg/C4wVziccAsSLIRjajU5IU5sz1zRRTicLS5RZUeeSia66HBRgdvVj4JeAvIUqrofgyicwb7r37bw2icDkibSFzY2ZWiarA/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)
+![Apollo自动驾驶架构](framework.jpg)
 
 #### 参考车辆平台
 
@@ -93,11 +93,11 @@ Apollo RTOS = Ubuntu Linux系统（非实时操作系统）与Apollo内核（ker
 
 ##### 应用程序模块层（⭐）
 
-![应用程序模块层](Application Modules.png)
+![应用程序模块层](Application-Modules.png)
 
 应用程序模块是Apollo的核心内容。Apollo软件平台具有各种模块，这些模块包括 MAP引擎、定位、感知、规划、控制、端到端驾驶以及人机接口（HMI）。
 
-![应用模块之间的关系](https://mmbiz.qpic.cn/mmbiz_jpg/C4wVziccAsSLIRjajU5IU5sz1zRRTicLS5sgl3oRzgI7lTubNwtWdsMrSO8OKxTNhvkzte6oBfK7HpPhJb0dwcMQ/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)
+![应用模块之间的关系](relationships.jpg)
 
 各模块间的关系较为复杂，后续的课程将对此部分进行展开。
 
