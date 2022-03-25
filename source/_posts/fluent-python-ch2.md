@@ -102,14 +102,14 @@ print(id(s))  # 2459788551216 修改不可变序列后地址发生变化
 >	```python
 >	import copy
 >	a = [1, 2, 3, 4, ['a', 'b']] # 原始对象
->	 							
+>	 									
 >	b = a                       # 赋值，传对象的引用
 >	c = copy.copy(a)            # 对象拷贝，浅拷贝
 >	d = copy.deepcopy(a)        # 对象拷贝，深拷贝
->	 							
+>	 									
 >	a.append(5)                 # 修改对象a
 >	a[4].append('c')            # 修改对象a中的['a', 'b']数组对象
->	 							
+>	 									
 >	print( 'a = ', a )
 >	print( 'b = ', b )
 >	print( 'c = ', c )
@@ -366,7 +366,7 @@ for item in line_items:
 
 ### 多维切片和省略
 
-见[队列](#linkslice)
+见[多维数组](#linkslice)
 
 ### 给切片赋值
 
@@ -538,7 +538,7 @@ dq.extendleft([10,20,30,40])
 print(dq)  # deque([40, 30, 20, 10, 3, 4, 5, 6, 7, 8], maxlen=10)
 ```
 
-![rotate(3)](rotate(3).png)
+<center>![rotate(3)](rotate(3).png)</center>
 
 ## 参考资料
 
