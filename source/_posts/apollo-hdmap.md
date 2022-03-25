@@ -76,4 +76,3 @@ categories: []
 1. [优达学城-无人驾驶第一课：从Apollo起步](https://apollo.auto/devcenter/coursevideo_cn.html)
 2. [Apollo自动驾驶入门课程第②讲 — 高精地图](https://mp.weixin.qq.com/s?__biz=MzI1NjkxOTMyNQ==&mid=2247485212&idx=1&sn=b7dac5461b3cf101b14c81e0f05efe39&chksm=ea1e156edd699c785dcc2dae05ba36946aa5cea0de7c4da63780d1a31304c8197cca16215026&scene=178&cur_album_id=1452705199189327878#rd)
 3. [Apollo 高精地图技术与应用](https://mp.weixin.qq.com/s?__biz=MzI1NjkxOTMyNQ==&mid=2247483829&idx=1&sn=e74e3ea5493363ff8bd5995e7bf275ba&scene=21#wechat_redirect)
-4. <span id='link4'>[晓畅Auto知乎专栏 - 百度Apollo学习笔记（四）](https://zhuanlan.zhihu.com/p/377154517)</span>

@@ -18,7 +18,7 @@ categories: []
 
 <!--more-->
 
-### 自动驾驶的分级
+## 自动驾驶的分级
 
 自动驾驶的分级 (Levels of Driving Automation)包含L1-L5共计五个级别。
 
@@ -34,17 +34,17 @@ categories: []
 
 - L5 - 完全无人驾驶 Full automation。
 
-### 技术框架
+## 技术框架
 
 技术框架包括四个层面：参考车辆平台 (Reference Vehicle Platform) 、参考硬件平台 (Reference Hardware Platform)、开源软件平台(Open Software Platform) 、云服务平台 (Cloud Service Platform)。
 
 ![Apollo自动驾驶架构](framework.jpg)
 
-#### 参考车辆平台
+### 参考车辆平台
 
 参考车辆平台指**线控驾驶车辆**，是受电子信号控制的基础车辆（区别于仅通过实体方向盘、油门踏板和刹车踏板控制的车辆）；
 
-#### 参考硬件平台
+### 参考硬件平台
 
 参考硬件平台，包含控制器区域网络 (CAN)、计算单元、GPS、惯性测量单元 (IMU)、Camera、激光雷达 (LIDAR)、毫米波雷达 (Radar)、人机交互设备、BlackBox等硬件：
 
@@ -65,17 +65,17 @@ categories: []
 
 - **毫米波雷达**：用来接收和发射毫米波，计算出车辆速度、距离远近等数据。分辨率低，但不受天气和照明条件限制。
 
-#### 开源软件平台
+### 开源软件平台
 
 开源软件平台包括：实时操作系统(RTOS)、运行时框架(Runtime Framework)和应用程序模块层(Application Modules Layer)。
 
-##### 实时操作系统
+#### 实时操作系统
 
 开放式软件平台以RTOS为基础，在其上搭建运行框架和应用程序模块。
 
 Apollo RTOS = Ubuntu Linux系统（非实时操作系统）与Apollo内核（kernel）的结合。对于自动驾驶而言，“实时”性能确保了系统稳定性和驾驶的安全性。
 
-##### 运行时框架
+#### 运行时框架
 
 运行时框架是Apollo的操作环境。详细解释见引用内容：
 
@@ -91,7 +91,7 @@ Apollo RTOS = Ubuntu Linux系统（非实时操作系统）与Apollo内核（ker
 >
 >**数据兼容**……确保节点和节点之间传送的ROS message是同一种格式。采用通用格式的消息数据，便能使节点之间互相理解对方想要传达的意图。这种接口语言叫做Protobuf，它是一种结构化数据序列化方法。即使在原传输序列后增添新的数据信息，也不会破坏原本的数据格式。[[4](#link4)]
 
-##### 应用程序模块层（⭐）
+#### 应用程序模块层（⭐）
 
 ![应用程序模块层](Application-Modules.png)
 
@@ -101,7 +101,7 @@ Apollo RTOS = Ubuntu Linux系统（非实时操作系统）与Apollo内核（ker
 
 各模块间的关系较为复杂，后续的课程将对此部分进行展开。
 
-#### 云服务平台
+### 云服务平台
 
 包括高精地图（HD MAP）、模拟驾驶的仿真服务（Simulation）、数据平台（Data Platform）、安全（Security）和OTA服务等。
 
