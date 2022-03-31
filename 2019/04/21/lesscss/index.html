@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fav.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fav.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Cathandra's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Less复习。Less是一种CSS预处理语言，规避了CSS的逻辑性短板。个人认为，Less主要是对CSS添加了变量、混合与函数三个板块的功能，藉此简化开发工作。那下面我就又要开始罗列知识点了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Less知识点复习">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;04&#x2F;21&#x2F;lesscss&#x2F;index.html">
+<meta property="og:site_name" content="Cathandra&#39;s Blog">
+<meta property="og:description" content="Less复习。Less是一种CSS预处理语言，规避了CSS的逻辑性短板。个人认为，Less主要是对CSS添加了变量、混合与函数三个板块的功能，藉此简化开发工作。那下面我就又要开始罗列知识点了。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-04-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-24T13:19:53.260Z">
+<meta property="article:author" content="Cathandra">
+<meta property="article:tag" content="less">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/04/21/lesscss/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Less知识点复习 | Cathandra's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cathandra's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/21/lesscss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.png">
+      <meta itemprop="name" content="Cathandra">
+      <meta itemprop="description" content="GIVE IT ALL YOU'VE GOT.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cathandra's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Less知识点复习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-21 00:00:00" itemprop="dateCreated datePublished" datetime="2019-04-21T00:00:00+08:00">2019-04-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Front-End/" itemprop="url" rel="index">
+                    <span itemprop="name">Front-End</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><code>Less</code>复习。<br><code>Less</code>是一种<code>CSS</code>预处理语言，规避了<code>CSS</code>的逻辑性短板。个人认为，<code>Less</code>主要是对<code>CSS</code>添加了变量、混合与函数三个板块的功能，藉此简化开发工作。<br><del>那下面我就又要开始罗列知识点了。<del></p>
+<a id="more"></a>
+
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>Less中定义的变量使用<code>@</code>开头，引用时直接使用<code>@variable_name</code>。</p>
+<h3 id="值变量"><a href="#值变量" class="headerlink" title="值变量"></a>值变量</h3><p>与其称之为变量，不如把变量理解为一个常量，因为其值本身就是不可以重新定义的。<br>这样，在编写样式文件时，对于常用变量，如主色调、固定的长度等等，可以直接进行通过变量名引用，不必重新写出值。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@lightPrimaryColor :</span> <span class="hljs-number">#fff</span>;<br><br><span class="hljs-selector-class">.nav__item--active</span>&#123;<br>    <span class="hljs-attribute">color</span>: <span class="hljs-variable">@lightPrimaryColor</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>其他还有属性变量、选择器变量等。为了上下思路连贯，这里就不多写了。</p>
+<h3 id="变量运算"><a href="#变量运算" class="headerlink" title="变量运算"></a>变量运算</h3><p>变量虽然不可修改，但是less支持对变量进行运算。在加减法中，单位自动与第一个变量统一。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@width:</span><span class="hljs-number">300px</span>;<br><br><span class="hljs-selector-id">#wrap</span>&#123;<br>    <span class="hljs-attribute">width</span>:<span class="hljs-variable">@width-20</span>;<br>    <span class="hljs-attribute">height</span>:<span class="hljs-variable">@width-20</span>*<span class="hljs-number">5</span>;<br>    <span class="hljs-attribute">margin</span>:(<span class="hljs-variable">@width-20</span>)*<span class="hljs-number">5</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="混合"><a href="#混合" class="headerlink" title="混合"></a>混合</h3><p>混合实质上可以理解为对方法的使用，所以归在下一节中。</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>方法直接可以和<code>声明的集合</code>一样定义，但是为了作区分，最好定义时在方法后写 <code>()</code>。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-class">.item</span> &#123; <span class="hljs-comment">// 等价于.item()</span><br>    <span class="hljs-attribute">width</span>: <span class="hljs-number">330px</span>;<br>    <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-number">2px</span> rgba(<span class="hljs-number">151</span>, <span class="hljs-number">151</span>, <span class="hljs-number">151</span>, .<span class="hljs-number">58</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>方法可以设置默认参数，然后在调用时直接使用或修改。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-class">.border</span>(<span class="hljs-variable">@color</span>:<span class="hljs-number">#000</span>)&#123;<br>    <span class="hljs-attribute">border</span>:solid <span class="hljs-number">1px</span> <span class="hljs-variable">@color</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="arguments——全部参数"><a href="#arguments——全部参数" class="headerlink" title="@arguments——全部参数"></a>@arguments——全部参数</h3><p><code>@arguments</code>和很多语言中一样，指代的是全部参数。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-class">.border</span>(<span class="hljs-variable">@a</span>:<span class="hljs-number">10px</span>,<span class="hljs-variable">@b</span>:<span class="hljs-number">50px</span>,<span class="hljs-variable">@c</span>:<span class="hljs-number">30px</span>,<span class="hljs-variable">@color</span>:<span class="hljs-number">#000</span>)&#123;<br>    <span class="hljs-attribute">border</span>:solid <span class="hljs-number">1px</span> <span class="hljs-variable">@color</span>;<br>    <span class="hljs-attribute">box-shadow</span>: <span class="hljs-variable">@arguments</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="匹配模式"><a href="#匹配模式" class="headerlink" title="匹配模式"></a>匹配模式</h3><p>可以和<code>多态</code>概念一样理解。</p>
+<h3 id="extend关键字——继承"><a href="#extend关键字——继承" class="headerlink" title="extend关键字——继承"></a>extend关键字——继承</h3><p>使用<code>extend</code>可以继承所匹配声明中的全部样式。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-class">.animation</span> &#123;<br>    <span class="hljs-attribute">transition</span>: all .<span class="hljs-number">3s</span> ease-out;<br>    <span class="hljs-selector-class">.hide</span> &#123;<span class="hljs-comment">// 嵌套</span><br>        <span class="hljs-attribute">transform</span>:scale(<span class="hljs-number">0</span>);<br>    &#125;<br>&#125;<br><span class="hljs-selector-id">#main</span> &#123;<br>    <span class="hljs-selector-tag">&amp;</span><span class="hljs-selector-pseudo">:extend(.animation)</span>;<span class="hljs-comment">// 继承</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="混合模式"><a href="#混合模式" class="headerlink" title="混合模式"></a>混合模式</h3><p>混合模式指，在需要使用该方法的元素样式中直接引用该方法。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-class">.item</span>() &#123; <br>    <span class="hljs-attribute">width</span>: <span class="hljs-number">330px</span>;<br>    <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">1px</span> <span class="hljs-number">2px</span> rgba(<span class="hljs-number">151</span>, <span class="hljs-number">151</span>, <span class="hljs-number">151</span>, .<span class="hljs-number">58</span>);<br>&#125;<br><span class="hljs-selector-id">#card</span> &#123;<br>    <span class="hljs-selector-class">.item</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="amp-关键字——嵌套模式"><a href="#amp-关键字——嵌套模式" class="headerlink" title="&amp;关键字——嵌套模式"></a>&amp;关键字——嵌套模式</h2><p>使用<code>&amp;</code>代表上一层选择器的名字。<br>嵌套与继承、与混合的区别在于，继承指继承所匹配声明中的全部样式、混合是引用了匹配样式，嵌套只是代表上一层选择器的名字。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">li</span> &#123;<br>    <span class="hljs-selector-tag">&amp;</span>: <span class="hljs-selector-tag">hover</span> &#123;<br>        <span class="hljs-attribute">color</span>: <span class="hljs-number">#aaa</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="media——媒体查询"><a href="#media——媒体查询" class="headerlink" title="@media——媒体查询"></a>@media——媒体查询</h2><p>less的媒体查询可以直接在元素内编写，每一个元素都会编译出自己 <code>@media</code> 声明。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-class">.nav</span> &#123;<br>    <span class="hljs-attribute">width</span>: <span class="hljs-number">960px</span>;<br>    <span class="hljs-keyword">@media</span> screen&#123;<br>        <span class="hljs-keyword">@media</span> (<span class="hljs-attribute">max-width</span>:<span class="hljs-number">768px</span>) &#123;<br>            <span class="hljs-attribute">width</span>: <span class="hljs-number">660px</span>;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="important关键字"><a href="#important关键字" class="headerlink" title="!important关键字"></a>!important关键字</h2><p><code>!important</code>关键字指对于重复规则强制使用。在less中直接在方法名后加关键字即可。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-class">.border</span> &#123;<br>    <span class="hljs-attribute">border</span>: solid <span class="hljs-number">1px</span> red;<br>    <span class="hljs-attribute">margin</span>: <span class="hljs-number">50px</span>;<br>&#125;<br><br><span class="hljs-selector-id">#box</span> &#123;<br>    <span class="hljs-selector-class">.border</span>() !important;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>虽然不属于语言特性但好像还是应该提一下。</p>
+<h3 id="在Node-js环境中使用Less"><a href="#在Node-js环境中使用Less" class="headerlink" title="在Node.js环境中使用Less"></a>在Node.js环境中使用Less</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span> -g <span class="hljs-keyword">less</span><br>&gt; lessc styles.<span class="hljs-keyword">less</span> styles.css<br></code></pre></td></tr></table></figure>
+
+<p>编译后，<code>.less</code>文件的内容会以符合css语法的形式出现在同名的<code>.css</code>文件中。</p>
+<h2 id="注释和避免编译"><a href="#注释和避免编译" class="headerlink" title="注释和避免编译"></a>注释和避免编译</h2><p><code>/* */</code>是CSS原生注释，会被编译在 CSS 文件中；<br><code>//</code> 是Less提供的注释，不会被编译在 CSS 文件中。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/less/" rel="tag"># less</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/04/07/jsClosure/" rel="next" title="JavaScript作用域与闭包">
+                  <i class="fa fa-chevron-left"></i> JavaScript作用域与闭包
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/04/28/vue&vue-router/" rel="prev" title="vue&vue-router">
+                  vue&vue-router <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#变量"><span class="nav-number">1.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#值变量"><span class="nav-number">1.1.</span> <span class="nav-text">值变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量运算"><span class="nav-number">1.2.</span> <span class="nav-text">变量运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#混合"><span class="nav-number">1.3.</span> <span class="nav-text">混合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法"><span class="nav-number">2.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#arguments——全部参数"><span class="nav-number">2.1.</span> <span class="nav-text">@arguments——全部参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配模式"><span class="nav-number">2.2.</span> <span class="nav-text">匹配模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#extend关键字——继承"><span class="nav-number">2.3.</span> <span class="nav-text">extend关键字——继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#混合模式"><span class="nav-number">2.4.</span> <span class="nav-text">混合模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#amp-关键字——嵌套模式"><span class="nav-number">3.</span> <span class="nav-text">&amp;关键字——嵌套模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#media——媒体查询"><span class="nav-number">4.</span> <span class="nav-text">@media——媒体查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#important关键字"><span class="nav-number">5.</span> <span class="nav-text">!important关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">6.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Node-js环境中使用Less"><span class="nav-number">6.1.</span> <span class="nav-text">在Node.js环境中使用Less</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释和避免编译"><span class="nav-number">7.</span> <span class="nav-text">注释和避免编译</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cathandra"
+      src="/images/head.png">
+  <p class="site-author-name" itemprop="name">Cathandra</p>
+  <div class="site-description" itemprop="description">GIVE IT ALL YOU'VE GOT.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:cathandra@163.com" title="E-Mail &rarr; mailto:cathandra@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cathandra</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '9cd5b6812247a5d05a58',
+      clientSecret: 'f88f192ed7d8d7199dcc9b59e84fd53e85320362',
+      repo: 'Talk',
+      owner: 'Cathandra',
+      admin: ['Cathandra'],
+      id: '89383f4ff1ceecbf7ee413f37cb955a3',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

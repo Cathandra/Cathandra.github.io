@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fav.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fav.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Cathandra's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="数据库系统概论课课后复习整理的笔记（二）。 自连接 方法： 1.寻找包含所有所需信息的最小表集； 2.（FROM）给各表记别名； 3.（WHERE）1）连接相同字段； 2）选择的条件； 4.（SELECT）选择要留下的信息。    e.g. 1234​​​SELECT a.sno,sname--a,b为别名--FROM SC a,Student as b--as可写可省略--WHERE cno&#x3D;&#39;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据查询之 多表查询">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;11&#x2F;02&#x2F;selectMulti&#x2F;index.html">
+<meta property="og:site_name" content="Cathandra&#39;s Blog">
+<meta property="og:description" content="数据库系统概论课课后复习整理的笔记（二）。 自连接 方法： 1.寻找包含所有所需信息的最小表集； 2.（FROM）给各表记别名； 3.（WHERE）1）连接相同字段； 2）选择的条件； 4.（SELECT）选择要留下的信息。    e.g. 1234​​​SELECT a.sno,sname--a,b为别名--FROM SC a,Student as b--as可写可省略--WHERE cno&#x3D;&#39;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-11-02T15:07:19.000Z">
+<meta property="article:modified_time" content="2022-03-24T13:19:53.271Z">
+<meta property="article:author" content="Cathandra">
+<meta property="article:tag" content="SQL">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/11/02/selectMulti/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>数据查询之 多表查询 | Cathandra's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cathandra's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/02/selectMulti/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.png">
+      <meta itemprop="name" content="Cathandra">
+      <meta itemprop="description" content="GIVE IT ALL YOU'VE GOT.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cathandra's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据查询之 多表查询
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-11-02 23:07:19" itemprop="dateCreated datePublished" datetime="2017-11-02T23:07:19+08:00">2017-11-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Back-End/" itemprop="url" rel="index">
+                    <span itemprop="name">Back-End</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>数据库系统概论课课后复习整理的笔记（二）。</p>
+<h2 id="自连接"><a href="#自连接" class="headerlink" title="自连接"></a>自连接</h2><ul>
+<li>方法：<ul>
+<li>1.寻找包含所有所需信息的最小表集；</li>
+<li>2.（FROM）给各表记别名；</li>
+<li>3.（WHERE）<br>1）连接相同字段； 2）选择的条件；</li>
+<li>4.（SELECT）选择要留下的信息。</li>
+</ul>
+</li>
+</ul>
+<p>e.g.</p>
+<figure class="highlight SQL"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs SQL">​​​<span class="hljs-keyword">SELECT</span> a.sno,sname<span class="hljs-comment">--a,b为别名--</span><br><span class="hljs-keyword">FROM</span> SC a,Student <span class="hljs-keyword">as</span> b<span class="hljs-comment">--as可写可省略--</span><br><span class="hljs-keyword">WHERE</span> cno=<span class="hljs-string">'2'</span> <span class="hljs-keyword">and</span> grade&gt;<span class="hljs-number">60</span><span class="hljs-comment">--选择的条件--</span><br><span class="hljs-keyword">AND</span> a.Sno=b.Sno<span class="hljs-comment">--链接两个表相同字段​--</span><br></code></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h2><h3 id="多标连接"><a href="#多标连接" class="headerlink" title="多标连接"></a>多标连接</h3><ul>
+<li><code>inner join</code>:只保留匹配的行</li>
+<li><code>left join</code>：连接，并保留左表全部行,空余的用NULL代替</li>
+<li><code>right join</code>：连接，并保留右表全部行,空余的用NULL代替</li>
+<li><code>full join</code>：连接，并保留所有行,空余的用NULL代替</li>
+</ul>
+<p>e.g.</p>
+<figure class="highlight SQL"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-keyword">SELECT</span> sname,cno,grade<br><span class="hljs-keyword">FROM</span> student a <span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> sc b <br><span class="hljs-keyword">ON</span> a.sno = b.sno<br><span class="hljs-keyword">WHERE</span> sage&lt;<span class="hljs-number">23</span>​​<br></code></pre></td></tr></table></figure>
+
+<h3 id="集合查询"><a href="#集合查询" class="headerlink" title="集合查询"></a>集合查询</h3><p>多用于字段间的交并差关系。</p>
+<ul>
+<li><code>union</code>-并:注意并相容</li>
+</ul>
+<p>e.g.</p>
+<figure class="highlight SQL"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> Student <span class="hljs-keyword">where</span> Sdept = <span class="hljs-string">'CS'</span><br><span class="hljs-keyword">union</span><br>​​<span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> Student <span class="hljs-keyword">where</span> Sage&lt;<span class="hljs-number">20</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>union all</code></li>
+</ul>
+<p>e.g.</p>
+<figure class="highlight SQL"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> <span class="hljs-number">1</span><br><span class="hljs-keyword">union</span><br><span class="hljs-keyword">select</span> <span class="hljs-number">2</span><br><span class="hljs-keyword">union</span> <span class="hljs-keyword">all</span><br><span class="hljs-keyword">select</span> <span class="hljs-number">2</span><span class="hljs-comment">--会选出122,即不去重</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>intersect</code>-交</li>
+</ul>
+<p>e.g.</p>
+<figure class="highlight SQL"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> sno <span class="hljs-keyword">from</span> Student <span class="hljs-keyword">where</span> Sdept = <span class="hljs-string">'CS'</span><br><span class="hljs-keyword">intersect</span><br>​​<span class="hljs-keyword">select</span> sno <span class="hljs-keyword">from</span> Sc <span class="hljs-keyword">where</span> cno=‘<span class="hljs-number">1</span>’<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>except</code>-差</li>
+</ul>
+<h3 id="基于派生表查询"><a href="#基于派生表查询" class="headerlink" title="基于派生表查询"></a>基于派生表查询</h3><p>多用于连接经过聚集查询而产生的临时表。</p>
+<p>e.g.</p>
+<figure class="highlight SQL"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> a.sno,cno <span class="hljs-keyword">from</span> sc a ,<br>(<span class="hljs-keyword">select</span> sno,<span class="hljs-keyword">avg</span>(grade) avg_g <span class="hljs-keyword">from</span> sc <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> sno ) b<span class="hljs-comment">--b为派生表，是临时产生的</span><br><span class="hljs-keyword">where</span> a.sno = b.sno<br><span class="hljs-keyword">and</span> a.grade&gt;b.avg_g<br></code></pre></td></tr></table></figure>
+
+<h3 id="跨库查询"><a href="#跨库查询" class="headerlink" title="跨库查询"></a>跨库查询</h3><p><code>..</code>用于跳出当前库，进行跨库查询。</p>
+<p>e.g.</p>
+<figure class="highlight SQL"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-keyword">select</span> *<br><span class="hljs-keyword">from</span> testdb..sc a,course b<br><span class="hljs-keyword">where</span> a.cno = b.cno<br></code></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SQL/" rel="tag"># SQL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2017/10/27/regex/" rel="next" title="正则表达式">
+                  <i class="fa fa-chevron-left"></i> 正则表达式
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/03/24/httpsForApache/" rel="prev" title="Apache配置https访问及跳转">
+                  Apache配置https访问及跳转 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#自连接"><span class="nav-number">1.</span> <span class="nav-text">自连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外连接"><span class="nav-number">2.</span> <span class="nav-text">外连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多标连接"><span class="nav-number">2.1.</span> <span class="nav-text">多标连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合查询"><span class="nav-number">2.2.</span> <span class="nav-text">集合查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于派生表查询"><span class="nav-number">2.3.</span> <span class="nav-text">基于派生表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨库查询"><span class="nav-number">2.4.</span> <span class="nav-text">跨库查询</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cathandra"
+      src="/images/head.png">
+  <p class="site-author-name" itemprop="name">Cathandra</p>
+  <div class="site-description" itemprop="description">GIVE IT ALL YOU'VE GOT.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:cathandra@163.com" title="E-Mail &rarr; mailto:cathandra@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cathandra</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '9cd5b6812247a5d05a58',
+      clientSecret: 'f88f192ed7d8d7199dcc9b59e84fd53e85320362',
+      repo: 'Talk',
+      owner: 'Cathandra',
+      admin: ['Cathandra'],
+      id: 'bfd421f206fcc39407e07210ab87e267',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

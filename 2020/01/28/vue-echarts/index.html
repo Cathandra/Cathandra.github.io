@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fav.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fav.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Cathandra's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="归纳2种用法：    直接使用原生echarts；  使用vue-echarts组件；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue集成echarts">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;28&#x2F;vue-echarts&#x2F;index.html">
+<meta property="og:site_name" content="Cathandra&#39;s Blog">
+<meta property="og:description" content="归纳2种用法：    直接使用原生echarts；  使用vue-echarts组件；">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-28T11:41:09.000Z">
+<meta property="article:modified_time" content="2022-03-24T13:19:53.277Z">
+<meta property="article:author" content="Cathandra">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/01/28/vue-echarts/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Vue集成echarts | Cathandra's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cathandra's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/28/vue-echarts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.png">
+      <meta itemprop="name" content="Cathandra">
+      <meta itemprop="description" content="GIVE IT ALL YOU'VE GOT.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cathandra's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue集成echarts
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-01-28 19:41:09" itemprop="dateCreated datePublished" datetime="2020-01-28T19:41:09+08:00">2020-01-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Front-End/" itemprop="url" rel="index">
+                    <span itemprop="name">Front-End</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>归纳2种用法：  </p>
+<ol>
+<li><p>直接使用原生echarts；</p>
+</li>
+<li><p>使用vue-echarts组件；</p>
+</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="直接使用原生echarts"><a href="#直接使用原生echarts" class="headerlink" title="直接使用原生echarts"></a>直接使用原生echarts</h2><h3 id="安装echarts"><a href="#安装echarts" class="headerlink" title="安装echarts"></a>安装echarts</h3><p>使用<code>npm</code>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm install echarts --save<br></code></pre></td></tr></table></figure>
+
+<p>或使用<code>yarn</code>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">yarn add echarts<br></code></pre></td></tr></table></figure>
+
+<h3 id="引用echarts"><a href="#引用echarts" class="headerlink" title="引用echarts"></a>引用echarts</h3><figure class="highlight JavaScript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> echarts = <span class="hljs-built_in">require</span>(<span class="hljs-string">'echarts'</span>);<br></code></pre></td></tr></table></figure>
+
+<p>或按需引入（本例为折线图）：</p>
+<figure class="highlight JavaScript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> echarts = <span class="hljs-built_in">require</span>(<span class="hljs-string">"echarts/lib/echarts"</span>);<br><span class="hljs-built_in">require</span>(<span class="hljs-string">"echarts/lib/chart/line"</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="创建实例"><a href="#创建实例" class="headerlink" title="创建实例"></a>创建实例</h3><h4 id="在mounted-钩子方法中使用"><a href="#在mounted-钩子方法中使用" class="headerlink" title="在mounted()钩子方法中使用"></a>在mounted()钩子方法中使用</h4><figure class="highlight JavaScript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs JavaScript">mounted() &#123;<br><span class="hljs-comment">// 在template中创建以echartContainer为id的dom，初始化echarts实例</span><br><span class="hljs-keyword">var</span> myChart = echarts.init(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'echartContainer'</span>));<br><span class="hljs-comment">// 或者创建ref属性为chartsContainer的dom，初始化实例</span><br><span class="hljs-comment">// var chartsContainer = this.$refs.chartsContainer;</span><br><span class="hljs-comment">// var myChart = echarts.init(chartsContainer);</span><br><br><span class="hljs-comment">// 绘制图表</span><br>myChart.setOption(&#123;<br>    <span class="hljs-attr">title</span>: &#123; <span class="hljs-attr">text</span>: <span class="hljs-string">'标题'</span> &#125;,<br>    <span class="hljs-attr">tooltip</span>: &#123;&#125;,<br>    <span class="hljs-attr">xAxis</span>: &#123;<br>        <span class="hljs-attr">data</span>: [<span class="hljs-string">"1990"</span>,<span class="hljs-string">"1991"</span>,<span class="hljs-string">"1992"</span>,<span class="hljs-string">"1993"</span>,<span class="hljs-string">"1994"</span>]<br>    &#125;,<br>    <span class="hljs-attr">yAxis</span>: &#123;&#125;,<br>    <span class="hljs-attr">series</span>: [&#123;<br>        <span class="hljs-attr">name</span>: <span class="hljs-string">'存款'</span>,<br>        <span class="hljs-attr">type</span>: <span class="hljs-string">'bar'</span>,<br>        <span class="hljs-attr">data</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]<br>    &#125;]<br>&#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><h2 id="使用vue-echarts组件"><a href="#使用vue-echarts组件" class="headerlink" title="使用vue-echarts组件"></a>使用vue-echarts组件</h2><h3 id="安装vue-echarts"><a href="#安装vue-echarts" class="headerlink" title="安装vue-echarts"></a>安装vue-echarts</h3><p>使用<code>npm</code>安装：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm install echarts vue-echarts<br></code></pre></td></tr></table></figure>
+
+<h3 id="引用vue-echarts"><a href="#引用vue-echarts" class="headerlink" title="引用vue-echarts"></a>引用vue-echarts</h3><figure class="highlight JavaScript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> echarts = <span class="hljs-built_in">require</span>(<span class="hljs-string">'echarts'</span>);<br></code></pre></td></tr></table></figure>
+
+<p>或按需引入（本例为折线图）：</p>
+<figure class="highlight JavaScript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs JavaScript"><span class="hljs-keyword">var</span> echarts = <span class="hljs-built_in">require</span>(<span class="hljs-string">"echarts/lib/echarts"</span>);<br><span class="hljs-built_in">require</span>(<span class="hljs-string">"echarts/lib/chart/line"</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="创建实例-1"><a href="#创建实例-1" class="headerlink" title="创建实例"></a>创建实例</h3><p>引用<a href="https://github.com/ecomfe/vue-echarts/blob/master/README.zh_CN.md#%E8%B0%83%E7%94%A8%E7%BB%84%E4%BB%B6" target="_blank" rel="noopener">官方文档</a>的例子：</p>
+<blockquote>
+<p>注册全局组件</p>
+</blockquote>
+<figure class="highlight JavaScript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs JavaScript">Vue.component(<span class="hljs-string">'v-chart'</span>, VueECharts);<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>调用组件</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">v-chart</span> <span class="hljs-attr">:options</span>=<span class="hljs-string">"polar"</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css"><br><span class="hljs-comment">/**<br> * 默认尺寸为 600px×400px，如果想让图表响应尺寸变化，可以像下面这样<br> * 把尺寸设为百分比值（同时请记得为容器设置尺寸）。<br> */</span><br><span class="hljs-selector-class">.echarts</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;<br>  <span class="hljs-attribute">height</span>: <span class="hljs-number">100%</span>;<br>&#125;<br></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript"><br><span class="hljs-keyword">import</span> ECharts <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-echarts'</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">'echarts/lib/chart/line'</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">'echarts/lib/component/polar'</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-attr">components</span>: &#123;<br>    <span class="hljs-string">'v-chart'</span>: ECharts<br>  &#125;,<br>  data () &#123;<br>    <span class="hljs-keyword">let</span> data = []<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">360</span>; i++) &#123;<br>        <span class="hljs-keyword">let</span> t = i / <span class="hljs-number">180</span> * <span class="hljs-built_in">Math</span>.PI<br>        <span class="hljs-keyword">let</span> r = <span class="hljs-built_in">Math</span>.sin(<span class="hljs-number">2</span> * t) * <span class="hljs-built_in">Math</span>.cos(<span class="hljs-number">2</span> * t)<br>        data.push([r, i])<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> &#123;<br>      <span class="hljs-attr">polar</span>: &#123;<br>        <span class="hljs-attr">title</span>: &#123;<br>          <span class="hljs-attr">text</span>: <span class="hljs-string">'极坐标双数值轴'</span><br>        &#125;,<br>        <span class="hljs-attr">legend</span>: &#123;<br>          <span class="hljs-attr">data</span>: [<span class="hljs-string">'line'</span>]<br>        &#125;,<br>        <span class="hljs-attr">polar</span>: &#123;<br>          <span class="hljs-attr">center</span>: [<span class="hljs-string">'50%'</span>, <span class="hljs-string">'54%'</span>]<br>        &#125;,<br>        <span class="hljs-attr">tooltip</span>: &#123;<br>          <span class="hljs-attr">trigger</span>: <span class="hljs-string">'axis'</span>,<br>          <span class="hljs-attr">axisPointer</span>: &#123;<br>            <span class="hljs-attr">type</span>: <span class="hljs-string">'cross'</span><br>          &#125;<br>        &#125;,<br>        <span class="hljs-attr">angleAxis</span>: &#123;<br>          <span class="hljs-attr">type</span>: <span class="hljs-string">'value'</span>,<br>          <span class="hljs-attr">startAngle</span>: <span class="hljs-number">0</span><br>        &#125;,<br>        <span class="hljs-attr">radiusAxis</span>: &#123;<br>          <span class="hljs-attr">min</span>: <span class="hljs-number">0</span><br>        &#125;,<br>        <span class="hljs-attr">series</span>: [<br>          &#123;<br>            <span class="hljs-attr">coordinateSystem</span>: <span class="hljs-string">'polar'</span>,<br>            <span class="hljs-attr">name</span>: <span class="hljs-string">'line'</span>,<br>            <span class="hljs-attr">type</span>: <span class="hljs-string">'line'</span>,<br>            <span class="hljs-attr">showSymbol</span>: <span class="hljs-literal">false</span>,<br>            <span class="hljs-attr">data</span>: data<br>          &#125;<br>        ],<br>        <span class="hljs-attr">animationDuration</span>: <span class="hljs-number">2000</span><br>      &#125;<br>    &#125;<br>  &#125;<br>&#125;<br></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>&gt;<br></code></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/vue/" rel="tag"># vue</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2020/01/16/props/" rel="next" title="Vue的Prop属性">
+                  <i class="fa fa-chevron-left"></i> Vue的Prop属性
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2021/01/08/two-sum/" rel="prev" title="两数之和">
+                  两数之和 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#直接使用原生echarts"><span class="nav-number">1.</span> <span class="nav-text">直接使用原生echarts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装echarts"><span class="nav-number">1.1.</span> <span class="nav-text">安装echarts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用echarts"><span class="nav-number">1.2.</span> <span class="nav-text">引用echarts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建实例"><span class="nav-number">1.3.</span> <span class="nav-text">创建实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在mounted-钩子方法中使用"><span class="nav-number">1.3.1.</span> <span class="nav-text">在mounted()钩子方法中使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">1.3.2.</span> <span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用vue-echarts组件"><span class="nav-number">2.</span> <span class="nav-text">使用vue-echarts组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装vue-echarts"><span class="nav-number">2.1.</span> <span class="nav-text">安装vue-echarts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用vue-echarts"><span class="nav-number">2.2.</span> <span class="nav-text">引用vue-echarts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建实例-1"><span class="nav-number">2.3.</span> <span class="nav-text">创建实例</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cathandra"
+      src="/images/head.png">
+  <p class="site-author-name" itemprop="name">Cathandra</p>
+  <div class="site-description" itemprop="description">GIVE IT ALL YOU'VE GOT.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:cathandra@163.com" title="E-Mail &rarr; mailto:cathandra@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cathandra</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '9cd5b6812247a5d05a58',
+      clientSecret: 'f88f192ed7d8d7199dcc9b59e84fd53e85320362',
+      repo: 'Talk',
+      owner: 'Cathandra',
+      admin: ['Cathandra'],
+      id: '3a70405fa1597c23de0fa8249969803d',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

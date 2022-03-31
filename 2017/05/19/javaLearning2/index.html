@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fav.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fav.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Cathandra's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Java初学习的课堂笔记。 类与对象类声明和类体123class 类名 &amp;#123;    类体的内容（声明变量+定义方法）&amp;#125;  方法1234方法头&#x3D;类型 名称（参数） &amp;#123;    方法体    返回值return ；&amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java初学习之 类与接口、常用实用类">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;05&#x2F;19&#x2F;javaLearning2&#x2F;index.html">
+<meta property="og:site_name" content="Cathandra&#39;s Blog">
+<meta property="og:description" content="Java初学习的课堂笔记。 类与对象类声明和类体123class 类名 &amp;#123;    类体的内容（声明变量+定义方法）&amp;#125;  方法1234方法头&#x3D;类型 名称（参数） &amp;#123;    方法体    返回值return ；&amp;#125;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-05-18T16:00:01.000Z">
+<meta property="article:modified_time" content="2022-03-24T13:19:53.258Z">
+<meta property="article:author" content="Cathandra">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/19/javaLearning2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Java初学习之 类与接口、常用实用类 | Cathandra's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cathandra's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/javaLearning2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.png">
+      <meta itemprop="name" content="Cathandra">
+      <meta itemprop="description" content="GIVE IT ALL YOU'VE GOT.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cathandra's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java初学习之 类与接口、常用实用类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-05-19 00:00:01" itemprop="dateCreated datePublished" datetime="2017-05-19T00:00:01+08:00">2017-05-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Back-End/" itemprop="url" rel="index">
+                    <span itemprop="name">Back-End</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Java初学习的课堂笔记。</p>
+<h2 id="类与对象"><a href="#类与对象" class="headerlink" title="类与对象"></a>类与对象</h2><h3 id="类声明和类体"><a href="#类声明和类体" class="headerlink" title="类声明和类体"></a>类声明和类体</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-class"><span class="hljs-keyword">class</span> 类名 </span>&#123;<br>    类体的内容（声明变量+定义方法）<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">方法头=类型 名称（参数） &#123;<br>    方法体<br>    返回值<span class="hljs-keyword">return</span> ；<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="成员变量和局部变量"><a href="#成员变量和局部变量" class="headerlink" title="成员变量和局部变量"></a>成员变量和局部变量</h3><p>This.成员变量；局部变量没有默认值 。</p>
+<h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs haxe">声明：类名 对象名;<br> +<br>分配变量：<span class="hljs-keyword">new</span><span class="hljs-type"></span>运算符 类的构造方法；<br></code></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight JAVA"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs JAVA">People Zhubajie；<br>Zhubajie = <span class="hljs-keyword">new</span> People();<br><span class="hljs-comment">//前面所述的接收键盘输入也是一种创建对象的过程</span><br>Scanner s = <span class="hljs-keyword">new</span> Scanner(System.in);<br></code></pre></td></tr></table></figure>
+
+<h3 id="操作变量、调用方法"><a href="#操作变量、调用方法" class="headerlink" title="操作变量、调用方法"></a>操作变量、调用方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plain">操作变量：对象.变量；<br>调用方法：对象.方法（）；<br></code></pre></td></tr></table></figure>
+
+<p>举例：(《JAVA2 实用教程（第四版）》第四章 例9)</p>
+<p>模拟手机和SIM卡的组合关系。涉及的类如下：</p>
+<ul>
+<li>SIM类负责创建SIM卡SIM.java 。</li>
+<li>MobileTelephone类负责创建手机MobileTelephone.java ，手机可以组合一个SIM卡，并可以调用setSIM (SIM card)方法更改其中的SIM卡。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SIM</span> </span>&#123;<br>    <span class="hljs-keyword">long</span> number;  <br>    SIM(<span class="hljs-keyword">long</span> number)&#123;<br>        <span class="hljs-keyword">this</span>.number = number;<br>    &#125;<br>    <span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-title">getNumber</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> number; <br>    &#125;<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MobileTelephone</span> </span>&#123; <br>    SIM sim;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setSIM</span><span class="hljs-params">(SIM card)</span> </span>&#123;<br>        sim = card;<br>    &#125; <br>    <span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-title">lookNumber</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">return</span> sim.getNumber();<br>    &#125;<br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Example4_9</span> </span>&#123;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>&#123;<br>       SIM simOne = <span class="hljs-keyword">new</span> SIM(<span class="hljs-number">13889776509L</span>);<br>       MobileTelephone mobile = <span class="hljs-keyword">new</span> MobileTelephone();<br>       mobile.setSIM(simOne);<br>       System.out.println(<span class="hljs-string">"手机号码:"</span>+mobile.lookNumber()); <br>       SIM simTwo = <span class="hljs-keyword">new</span> SIM(<span class="hljs-number">15967563567L</span>);<br>       mobile.setSIM(simTwo);<br>       System.out.println(<span class="hljs-string">"手机号码:"</span>+mobile.lookNumber());  <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="实例变量和类变量"><a href="#实例变量和类变量" class="headerlink" title="实例变量和类变量"></a>实例变量和类变量</h3><p>关键字static给予修饰的称作类变量，否则称作实例变量。所有对象共享类变量，通过类名直接访问类变量。<br>举例：(《JAVA2 实用教程（第四版）》第四章 例10)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Lader</span> </span>&#123; <br>    <span class="hljs-keyword">double</span> 上底,高;       <span class="hljs-comment">//实例变量</span><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">double</span> 下底;     <span class="hljs-comment">//类变量,可以通过类名调用</span><br>    <span class="hljs-keyword">void</span> 设置上底(<span class="hljs-keyword">double</span> a) &#123;<br>        上底 = a; &#125;<br>    <span class="hljs-keyword">void</span> 设置下底(<span class="hljs-keyword">double</span> b) &#123;<br>        下底 = b; &#125;<br>    <span class="hljs-keyword">double</span> 获取上底() &#123;<br>       <span class="hljs-keyword">return</span> 上底; &#125;<br>    <span class="hljs-keyword">double</span> 获取下底() &#123;<br>       <span class="hljs-keyword">return</span> 下底; &#125;<br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Example4_10</span> </span>&#123; <br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>&#123;<br>       Lader.下底=<span class="hljs-number">100</span>;     <span class="hljs-comment">//Lader的字节码被加载到内存,通过类名操作类变量</span><br>       Lader laderOne=<span class="hljs-keyword">new</span> Lader();<br>       Lader laderTwo=<span class="hljs-keyword">new</span> Lader();<br>       laderOne.设置上底(<span class="hljs-number">28</span>);<br>       laderTwo.设置上底(<span class="hljs-number">66</span>);<br>       System.out.println(<span class="hljs-string">"laderOne的上底:"</span>+laderOne.获取上底());<br>       System.out.println(<span class="hljs-string">"laderOne的下底:"</span>+laderOne.获取下底());<br>       System.out.println(<span class="hljs-string">"laderTwo的上底:"</span>+laderTwo.获取上底());<br>       System.out.println(<span class="hljs-string">"laderTwo的下底:"</span>+laderTwo.获取下底());<br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="访问权限"><a href="#访问权限" class="headerlink" title="访问权限"></a>访问权限</h3><h4 id="private"><a href="#private" class="headerlink" title="private"></a>private</h4><p>不能通过<code>.</code>调用，只能在类中的函数中使用，类外部要通过函数使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span> </span>&#123;<br>   <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> age;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setAge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> age)</span> </span>&#123;<br>      <span class="hljs-keyword">if</span>(age&gt;=<span class="hljs-number">7</span>&amp;&amp;age&lt;=<span class="hljs-number">28</span>) &#123;<br>          <span class="hljs-keyword">this</span>.age=age;<br>      &#125;<br>   &#125;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getAge</span><span class="hljs-params">()</span> </span>&#123;<br>      <span class="hljs-keyword">return</span> age;<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="protected"><a href="#protected" class="headerlink" title="protected"></a>protected</h4><p>不同包内可直接调用；</p>
+<h5 id="friendly"><a href="#friendly" class="headerlink" title="friendly"></a>friendly</h5><p>不同包内不可直接调用，同包内可直接调用；</p>
+<h2 id="子类与继承"><a href="#子类与继承" class="headerlink" title="子类与继承"></a>子类与继承</h2><h3 id="定义子类："><a href="#定义子类：" class="headerlink" title="定义子类："></a>定义子类：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> 子类名  <span class="hljs-keyword">extends</span>  父类名 </span>&#123;<br>       … <br> &#125;<br></code></pre></td></tr></table></figure>
+
+<p>除了Object类每个类有且仅有一个父类，一个类可以有多个或零个子类。</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>同一个包中，子类继承父类的非private的成员变量，且权限不变；<br>如果不在同一个包中，子类继承父类的非private的成员变量和方法，且权限不变</p>
+<h3 id="instanceof运算符"><a href="#instanceof运算符" class="headerlink" title="instanceof运算符"></a>instanceof运算符</h3><p>当左面的操作元是右面的类或其子类所创建的对象时，instanceof运算的结果是true，否则是false 。</p>
+<h3 id="super关键字"><a href="#super关键字" class="headerlink" title="super关键字"></a>super关键字</h3><p>通过方法重写，子类可以隐藏父类的方法。如果调用被隐藏的方法，需在方法前加上super；<br>除此，使用super还可以调用父类的构造方法。</p>
+<h3 id="final关键字"><a href="#final关键字" class="headerlink" title="final关键字"></a>final关键字</h3><ul>
+<li>final 类不能有子类；</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> </span>&#123;<br>      … …<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<p>final方法不允许子类重写。</p>
+<ul>
+<li>final定义常量。</li>
+</ul>
+<h3 id="上转型对象"><a href="#上转型对象" class="headerlink" title="上转型对象"></a>上转型对象</h3><p>不能操作子类新增成员变量，不能使用子类新增方法；可以操作继承的或重写的方法。</p>
+<h3 id="abstract关键字"><a href="#abstract关键字" class="headerlink" title="abstract关键字"></a>abstract关键字</h3><p>abstract类不能用new运算创建对象。</p>
+<h2 id="接口与实现"><a href="#接口与实现" class="headerlink" title="接口与实现"></a>接口与实现</h2><h3 id="接口声明与接口体"><a href="#接口声明与接口体" class="headerlink" title="接口声明与接口体"></a>接口声明与接口体</h3><ul>
+<li>声明：interface 接口的名字 ；</li>
+<li>接口体：包含声明常量和抽象方法两部分。（因为是抽象方法，所以访问权限必为public）</li>
+</ul>
+<h3 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h3><p>一个类通过使用关键字implements声明自己实现一个或多个接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Printable</span>,<span class="hljs-title">Addable</span>//<span class="hljs-title">A</span>实现<span class="hljs-title">Printable</span>,<span class="hljs-title">Addable</span>接口</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="接口回调"><a href="#接口回调" class="headerlink" title="接口回调"></a>接口回调</h3><p>当接口变量调用被类重写的接口方法时，就是通知相应的对象调用这个方法。<br>举例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">interface</span>  <span class="hljs-title">ShowMessage</span> </span>&#123;<br>   <span class="hljs-keyword">void</span> 显示商标(String s);<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TV</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ShowMessage</span> </span>&#123;<br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> 显示商标(String s) &#123;<br>      System.out.println(s);<br>   &#125;<br>&#125;<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PC</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ShowMessage</span> </span>&#123;<br>   <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> 显示商标(String s) &#123; <br>     System.out.println(s);<br>   &#125;<br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Example6_3</span> </span>&#123;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>&#123;<br>      ShowMessage sm;                  <span class="hljs-comment">//声明接口变量</span><br>      sm=<span class="hljs-keyword">new</span> TV();                     <span class="hljs-comment">//接口变量中存放对象的引用</span><br>      sm.显示商标(<span class="hljs-string">"长城牌电视机"</span>);      <span class="hljs-comment">//接口回调。</span><br>      sm=<span class="hljs-keyword">new</span> PC();                     <span class="hljs-comment">//接口变量中存放对象的引用</span><br>      sm.显示商标(<span class="hljs-string">"联想奔月5008PC机"</span>); <span class="hljs-comment">//接口回调</span><br>   &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="常用实用类"><a href="#常用实用类" class="headerlink" title="常用实用类"></a>常用实用类</h2><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><h4 id="声明与创建"><a href="#声明与创建" class="headerlink" title="声明与创建"></a>声明与创建</h4><p>声明：<code>String s;</code></p>
+<p>创建：<code>String(s)</code>，<code>String (char a[])</code>，<code>String(char a[],int startIndex,int count)</code>或：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">char</span> a[] = &#123;<span class="hljs-string">'J'</span>,<span class="hljs-string">'a'</span>,<span class="hljs-string">'v'</span>,<span class="hljs-string">'a'</span>&#125;;<br>String s = <span class="hljs-keyword">new</span> String(a);<br></code></pre></td></tr></table></figure>
+
+<h4 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h4><ul>
+<li>获得字符串长度<code>.length();</code></li>
+<li>判断是否相等<code>.equals(str);</code></li>
+<li>判断前后缀<code>.startsWith(str);</code>/<code>.endsWith(str);</code></li>
+<li>比较在unicode的大小<code>.compareTo(str);</code>/<code>.compareToIgnoreCase();</code></li>
+<li>判断是否含有某些字符<code>.contains(str);</code></li>
+<li>在第几位有哪个特定的字符<code>.indexOf (str);</code>/<code>.indexOf (str,i);</code></li>
+<li>截取<code>.substring(i,j);</code></li>
+<li>获得去掉前后空格的字符串<code>.trim();</code></li>
+</ul>
+<p>举例：截取区号</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">String number,str,numberFlag;<br>System.out.println(<span class="hljs-string">"请输入查询的的座机号码，其格式为“区号-电话号码”："</span>);<br>Scanner scan = <span class="hljs-keyword">new</span> Scanner(System.in);<br>str = scan.next();<br><span class="hljs-keyword">int</span> i = str.indexOf(<span class="hljs-string">'-'</span>);<br>numberFlag = str.substring(<span class="hljs-number">0</span>,i);<br>System.out.println(<span class="hljs-string">"区号是："</span> + numberFlag);<br></code></pre></td></tr></table></figure>
+
+<h3 id="数值与字符串之间的转换"><a href="#数值与字符串之间的转换" class="headerlink" title="数值与字符串之间的转换"></a>数值与字符串之间的转换</h3><h4 id="数值-字符串"><a href="#数值-字符串" class="headerlink" title="数值-字符串"></a>数值-字符串</h4><p>调用Byte、Integer等类进行强制类型转换：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">int</span> x = Integer.parseInt(s);<br></code></pre></td></tr></table></figure>
+
+<p>同理：<code>Byte.parseByte()</code>、<code>Short.parseShort()</code>、<code>Long.parseLong()</code>、<code>Float.parseFloat()</code>、<code>Double.parseDouble()</code>…</p>
+<h4 id="字符串-数值"><a href="#字符串-数值" class="headerlink" title="字符串-数值"></a>字符串-数值</h4><p>调用<code>.valueOf()</code>函数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">String str = String.valueOf(<span class="hljs-number">12313.9876</span>);<br></code></pre></td></tr></table></figure>
+
+<h4 id="字符数组-字符串"><a href="#字符数组-字符串" class="headerlink" title="字符数组-字符串"></a>字符数组-字符串</h4><ul>
+<li><code>.getChars(int start,int end,char c[],int offset);</code>// 将字符串存放到数组中</li>
+<li><code>.toCharArray();</code>//将字符串中的全部字符存放在一个字符数组中</li>
+<li><code>.getBytes();</code>//将当前字符串转化为一个字节数组</li>
+</ul>
+<h3 id="StringTokenizer类"><a href="#StringTokenizer类" class="headerlink" title="StringTokenizer类"></a>StringTokenizer类</h3><h4 id="nextToken-函数"><a href="#nextToken-函数" class="headerlink" title="nextToken()函数"></a><code>nextToken()</code>函数</h4><p>逐个获取字符串中的语言符号（单词），字符串分析器中的负责计数的变量的值就自动减一。</p>
+<h4 id="hasMoreTokens-函数"><a href="#hasMoreTokens-函数" class="headerlink" title="hasMoreTokens()函数"></a><code>hasMoreTokens()</code>函数</h4><p>只要字符串中还有语言符号，即计数变量的值大于0，该方法就返回true，否则返回false。 </p>
+<h4 id="countTokens-函数"><a href="#countTokens-函数" class="headerlink" title="countTokens()函数"></a><code>countTokens()</code>函数</h4><p>得到分析器中计数变量的值。<br>应用举例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java">String s=<span class="hljs-string">"you are welcome(thank you),nice to meet you"</span>;<br>StringTokenizer fenxi=<span class="hljs-keyword">new</span> StringTokenizer(s,<span class="hljs-string">"() ,"</span>); <br><span class="hljs-keyword">int</span> number=fenxi.countTokens();<br><span class="hljs-keyword">while</span>(fenxi.hasMoreTokens()) &#123;<br>    String str=fenxi.nextToken();<br>    System.out.print(str+<span class="hljs-string">" "</span>);<br>    &#125;<br>System.out.println(<span class="hljs-string">"共有单词："</span>+number+<span class="hljs-string">"个"</span>);<br></code></pre></td></tr></table></figure>
+
+<h3 id="Random类"><a href="#Random类" class="headerlink" title="Random类"></a>Random类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">Math.random()*<span class="hljs-number">100</span>;<span class="hljs-comment">//输出(1,100)的随机数</span><br><span class="hljs-comment">//</span><br>Random random=<span class="hljs-keyword">new</span> Random();<br>random.nextInt(<span class="hljs-number">100</span>);<span class="hljs-comment">//输出(1,100)随机数</span><br><span class="hljs-comment">//</span><br>random.nextBoolean();<span class="hljs-comment">//返回一个随机boolean值</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="文本输入输出流"><a href="#文本输入输出流" class="headerlink" title="文本输入输出流"></a>文本输入输出流</h2><h3 id="File类"><a href="#File类" class="headerlink" title="File类"></a>File类</h3><h4 id="创建file对象"><a href="#创建file对象" class="headerlink" title="创建file对象"></a>创建file对象</h4><p>创建一个File对象的构造方法有3个：<br>    <code>File(String filename);</code><br>    <code>File(String directoryPath,String filename);</code>(注意路径中需要转义字符，以免歧义)<br>    <code>File(File f, String filename);</code><br>e.g.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">File dirFile = <span class="hljs-keyword">new</span> File(<span class="hljs-string">"."</span>);<span class="hljs-comment">//"."表示当前目录</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="相关函数-1"><a href="#相关函数-1" class="headerlink" title="相关函数"></a>相关函数</h4><h5 id="文件相关"><a href="#文件相关" class="headerlink" title="文件相关"></a>文件相关</h5><ul>
+<li>获取文件的名字<code>.getName()</code></li>
+<li>判断文件是否是可读的<code>.canRead()</code></li>
+<li>判断文件是否可被写入<code>.canWrite()</code></li>
+<li>判断文件是否存在<code>.exits()</code></li>
+<li>获取文件的长度（单位是字节）<code>length()</code></li>
+<li>获取文件的绝对路径<code>getAbsolutePath()</code></li>
+<li>获取文件的父目录<code>.getParent()</code></li>
+<li>创建新文件<code>.createNewFile()</code></li>
+<li>删除当前文件 <code>.delete()</code></li>
+</ul>
+<h5 id="路径相关"><a href="#路径相关" class="headerlink" title="路径相关"></a>路径相关</h5><ul>
+<li>用字符串形式返回目录下的全部文件<code>.list()</code>(返回String类型的数组)</li>
+<li>用File对象形式返回目录下的全部文件<code>.listFiles()</code>(返回file数组)  </li>
+<li>用字符串形式返回目录下的指定类型的所有文件<code>.list(FilenameFilter obj)</code>(返回String类型的数组)</li>
+<li>用File对象形式返回目录下的指定类型所有文件<code>listFiles(FilenameFilter obj)</code>(返回file数组)  </li>
+</ul>
+<h5 id="可执行文件相关-Runtime类"><a href="#可执行文件相关-Runtime类" class="headerlink" title="可执行文件相关(Runtime类)"></a>可执行文件相关(Runtime类)</h5><ul>
+<li>声明 + 创建对象：<code>Runtime runtime = Runtime.getRuntime()</code>;</li>
+<li>执行：<code>.exec(String absolutePath)</code>;</li>
+</ul>
+<h3 id="字符输入输出流（Reader和Writer类）"><a href="#字符输入输出流（Reader和Writer类）" class="headerlink" title="字符输入输出流（Reader和Writer类）"></a>字符输入输出流（Reader和Writer类）</h3><p>举例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java">File sourceFile = <span class="hljs-keyword">new</span> File(<span class="hljs-string">"a.txt"</span>);<span class="hljs-comment">//读取的文件</span><br>File targetFile = <span class="hljs-keyword">new</span> File(<span class="hljs-string">"b.txt"</span>);<span class="hljs-comment">//写入的文件</span><br><span class="hljs-keyword">char</span> c[];<br><span class="hljs-keyword">try</span>&#123; <br>    Reader in = <span class="hljs-keyword">new</span> FileReader(sourceFile);<span class="hljs-comment">//定义读取操作为in</span><br>    Writer out = <span class="hljs-keyword">new</span> FileWriter(targetFile,<span class="hljs-keyword">true</span>);<span class="hljs-comment">//写入，out</span><br>        <span class="hljs-keyword">while</span>(<span class="hljs-keyword">int</span> n = in.read(c)!=-<span class="hljs-number">1</span>)&#123;<span class="hljs-comment">//固定套路，判断c[]是否为空</span><br>		    out.write =(c,<span class="hljs-number">0</span>,n);<span class="hljs-comment">//字符数组c[]中取0开始的n个量写入targetFile</span><br>        &#125;<br>    out.flush();<br>    out.close();<br>&#125;<span class="hljs-keyword">catch</span>(IOException e)&#123;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="缓冲流（BufferedReader和BufferedWriter类）"><a href="#缓冲流（BufferedReader和BufferedWriter类）" class="headerlink" title="缓冲流（BufferedReader和BufferedWriter类）"></a>缓冲流（BufferedReader和BufferedWriter类）</h3><ul>
+<li>读取文本行<code>readLine()</code></li>
+<li>把字符串s写到文件中<code>write(String s,int off,int len)</code></li>
+<li>向文件写入一个回行符<code>newLine();</code></li>
+</ul>
+<p>举例：(《JAVA2 实用教程（第四版）》第十章 例7)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.io.*;<br><span class="hljs-keyword">import</span> java.util.*;<br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Example10_7</span> </span>&#123;<br>   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String args[])</span> </span>&#123;<br>      File fRead = <span class="hljs-keyword">new</span> File(<span class="hljs-string">"english.txt"</span>);<br>      File fWrite = <span class="hljs-keyword">new</span> File(<span class="hljs-string">"englishCount.txt"</span>);<br>      <span class="hljs-keyword">try</span>&#123;  Writer out = <span class="hljs-keyword">new</span> FileWriter(fWrite);<br>            BufferedWriter bufferWrite = <span class="hljs-keyword">new</span> BufferedWriter(out);<br>            Reader in = <span class="hljs-keyword">new</span> FileReader(fRead);<br>            BufferedReader bufferRead =<span class="hljs-keyword">new</span> BufferedReader(in);<br>            String str = <span class="hljs-keyword">null</span>;<br>            <span class="hljs-keyword">while</span>((str=bufferRead.readLine())!=<span class="hljs-keyword">null</span>) &#123;<br>               StringTokenizer fenxi = <span class="hljs-keyword">new</span> StringTokenizer(str);<br>               <span class="hljs-keyword">int</span> count=fenxi.countTokens();<br>               str = str+<span class="hljs-string">" 句子中单词个数:"</span>+count;<br>               bufferWrite.write(str);<br>               bufferWrite.newLine();<br>            &#125; <br>            bufferWrite.close(); <br>            out.close();<br>            in = <span class="hljs-keyword">new</span> FileReader(fWrite);<br>            bufferRead =<span class="hljs-keyword">new</span> BufferedReader(in);<br>            String s=<span class="hljs-keyword">null</span>;<br>            System.out.println(fWrite.getName()+<span class="hljs-string">"内容:"</span>);<br>            <span class="hljs-keyword">while</span>((s=bufferRead.readLine())!=<span class="hljs-keyword">null</span>) &#123;<br>              System.out.println(s);<br>           &#125;  <br>           bufferRead.close();<br>           in.close();<br>      &#125;<br>      <span class="hljs-keyword">catch</span>(IOException e) &#123;<br>          System.out.println(e.toString());<br>      &#125;<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2017/05/19/javaLearning1/" rel="next" title="Java初学习之 Java基础">
+                  <i class="fa fa-chevron-left"></i> Java初学习之 Java基础
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2017/10/15/hello-world/" rel="prev" title="Hello World">
+                  Hello World <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类与对象"><span class="nav-number">1.</span> <span class="nav-text">类与对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类声明和类体"><span class="nav-number">1.1.</span> <span class="nav-text">类声明和类体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">1.2.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#成员变量和局部变量"><span class="nav-number">1.3.</span> <span class="nav-text">成员变量和局部变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建对象"><span class="nav-number">1.4.</span> <span class="nav-text">创建对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作变量、调用方法"><span class="nav-number">1.5.</span> <span class="nav-text">操作变量、调用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例变量和类变量"><span class="nav-number">1.6.</span> <span class="nav-text">实例变量和类变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问权限"><span class="nav-number">1.7.</span> <span class="nav-text">访问权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#private"><span class="nav-number">1.7.1.</span> <span class="nav-text">private</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protected"><span class="nav-number">1.7.2.</span> <span class="nav-text">protected</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#friendly"><span class="nav-number">1.7.2.1.</span> <span class="nav-text">friendly</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#子类与继承"><span class="nav-number">2.</span> <span class="nav-text">子类与继承</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义子类："><span class="nav-number">2.1.</span> <span class="nav-text">定义子类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承"><span class="nav-number">2.2.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#instanceof运算符"><span class="nav-number">2.3.</span> <span class="nav-text">instanceof运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#super关键字"><span class="nav-number">2.4.</span> <span class="nav-text">super关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final关键字"><span class="nav-number">2.5.</span> <span class="nav-text">final关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上转型对象"><span class="nav-number">2.6.</span> <span class="nav-text">上转型对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#abstract关键字"><span class="nav-number">2.7.</span> <span class="nav-text">abstract关键字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口与实现"><span class="nav-number">3.</span> <span class="nav-text">接口与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#接口声明与接口体"><span class="nav-number">3.1.</span> <span class="nav-text">接口声明与接口体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现接口"><span class="nav-number">3.2.</span> <span class="nav-text">实现接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口回调"><span class="nav-number">3.3.</span> <span class="nav-text">接口回调</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用实用类"><span class="nav-number">4.</span> <span class="nav-text">常用实用类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String"><span class="nav-number">4.1.</span> <span class="nav-text">String</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#声明与创建"><span class="nav-number">4.1.1.</span> <span class="nav-text">声明与创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关函数"><span class="nav-number">4.1.2.</span> <span class="nav-text">相关函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数值与字符串之间的转换"><span class="nav-number">4.2.</span> <span class="nav-text">数值与字符串之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数值-字符串"><span class="nav-number">4.2.1.</span> <span class="nav-text">数值-字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串-数值"><span class="nav-number">4.2.2.</span> <span class="nav-text">字符串-数值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符数组-字符串"><span class="nav-number">4.2.3.</span> <span class="nav-text">字符数组-字符串</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StringTokenizer类"><span class="nav-number">4.3.</span> <span class="nav-text">StringTokenizer类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#nextToken-函数"><span class="nav-number">4.3.1.</span> <span class="nav-text">nextToken()函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hasMoreTokens-函数"><span class="nav-number">4.3.2.</span> <span class="nav-text">hasMoreTokens()函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#countTokens-函数"><span class="nav-number">4.3.3.</span> <span class="nav-text">countTokens()函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Random类"><span class="nav-number">4.4.</span> <span class="nav-text">Random类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文本输入输出流"><span class="nav-number">5.</span> <span class="nav-text">文本输入输出流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#File类"><span class="nav-number">5.1.</span> <span class="nav-text">File类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建file对象"><span class="nav-number">5.1.1.</span> <span class="nav-text">创建file对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关函数-1"><span class="nav-number">5.1.2.</span> <span class="nav-text">相关函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#文件相关"><span class="nav-number">5.1.2.1.</span> <span class="nav-text">文件相关</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#路径相关"><span class="nav-number">5.1.2.2.</span> <span class="nav-text">路径相关</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可执行文件相关-Runtime类"><span class="nav-number">5.1.2.3.</span> <span class="nav-text">可执行文件相关(Runtime类)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符输入输出流（Reader和Writer类）"><span class="nav-number">5.2.</span> <span class="nav-text">字符输入输出流（Reader和Writer类）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲流（BufferedReader和BufferedWriter类）"><span class="nav-number">5.3.</span> <span class="nav-text">缓冲流（BufferedReader和BufferedWriter类）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cathandra"
+      src="/images/head.png">
+  <p class="site-author-name" itemprop="name">Cathandra</p>
+  <div class="site-description" itemprop="description">GIVE IT ALL YOU'VE GOT.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:cathandra@163.com" title="E-Mail &rarr; mailto:cathandra@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cathandra</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '9cd5b6812247a5d05a58',
+      clientSecret: 'f88f192ed7d8d7199dcc9b59e84fd53e85320362',
+      repo: 'Talk',
+      owner: 'Cathandra',
+      admin: ['Cathandra'],
+      id: 'c0683bb81bfc30ab3d76703c5f54ea99',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
