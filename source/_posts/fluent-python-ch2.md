@@ -102,14 +102,14 @@ print(id(s))  # 2459788551216 修改不可变序列后地址发生变化
 >	```python
 >	import copy
 >	a = [1, 2, 3, 4, ['a', 'b']] # 原始对象
->	 									
+>	 										
 >	b = a                       # 赋值，传对象的引用
 >	c = copy.copy(a)            # 对象拷贝，浅拷贝
 >	d = copy.deepcopy(a)        # 对象拷贝，深拷贝
->	 									
+>	 										
 >	a.append(5)                 # 修改对象a
 >	a[4].append('c')            # 修改对象a中的['a', 'b']数组对象
->	 									
+>	 										
 >	print( 'a = ', a )
 >	print( 'b = ', b )
 >	print( 'c = ', c )
@@ -300,13 +300,13 @@ divmod(**d)  # divmod(2, 1)
 压包是拆包的逆过程。
 
 ```python
->>> a = ['a', 'b', 'c']
->>> b = [1, 2, 3]
->>> for i in zip(a, b):
->>>     print(i)
-('a', 1)
-('b', 2)
-('c', 3)
+a = ['a', 'b', 'c']
+b = [1, 2, 3]
+for i in zip(a, b):
+    print(i)
+# ('a', 1)
+# ('b', 2)
+# ('c', 3)
 ```
 
 ### 具名元组
@@ -554,3 +554,12 @@ print(dq)  # deque([40, 30, 20, 10, 3, 4, 5, 6, 7, 8], maxlen=10)
 6. [卓尔不群的雅典 - Python函数参数传递机制](https://www.jianshu.com/p/1eeca1a39243)
 6. [可口可乐嗨 - python-变量与参数传递 ](https://www.cnblogs.com/marton/p/10668003.html)
 
+## TODOs
+
+本部分内容非常丰富，遗留了一些没有深入学习的部分：
+
+1. 进一步理解：值传递和参数传递、深浅拷贝；
+2. 元组拆包的`*`占位符；
+3. 具名元组的有类属性、类方法和实例方法；
+4. bisect模块；
+5. 内存视图和队列。
