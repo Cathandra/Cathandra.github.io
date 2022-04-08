@@ -63,7 +63,7 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;01&#x2F;12&#x2F;apollo-perception&#x2F;roi.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;01&#x2F;12&#x2F;apollo-perception&#x2F;detection.jpg">
 <meta property="article:published_time" content="2022-01-12T06:16:28.000Z">
-<meta property="article:modified_time" content="2022-04-08T15:34:02.454Z">
+<meta property="article:modified_time" content="2022-04-08T15:42:31.573Z">
 <meta property="article:author" content="Cathandra">
 <meta property="article:tag" content="Automation">
 <meta name="twitter:card" content="summary">
@@ -288,14 +288,14 @@
 <p>语义分割依赖于一种特殊类型的CNN，被称为<strong>全卷积网络（FCN）</strong>。FCN用卷积层来替代传统CNN体系结构末端的平坦层，现在网络中的每一层都是卷积层，因此名称为“<strong>全卷积网络</strong>”。FCN提供了可在原始输入图像之上叠加的逐像素输出。在CNN中，经过多次卷积的输出比原始输入图像小，对此，可以对中间输出进行上采样处理，直到最终输出的大小与原始输出图像的大小相匹配。</p>
 <p>网络的前半部分通常被称为<strong>编码器</strong>，因为这部分网络对输入图像的特征进行了提取和编码。网络的后半部分通常被称为<strong>解码器</strong>，因为它对这些特征进行了解码并将其应用于输出。</p>
 <p>除图像外，激光雷达数据的点云图和其他类型的数据也可以进行语义分割。</p>
-<h3 id="Apollo感知"><a href="#Apollo感知" class="headerlink" title="Apollo感知"></a>Apollo感知</h3><p>Apollo 在高精度地图上使用感兴趣区域ROI来重点关注相关对象。Apollo将ROI过滤器应用于点云和图像数据，以缩小搜索范围并加快感知。</p>
+<h2 id="Apollo感知"><a href="#Apollo感知" class="headerlink" title="Apollo感知"></a>Apollo感知</h2><p>Apollo 在高精度地图上使用感兴趣区域ROI来重点关注相关对象。Apollo将ROI过滤器应用于点云和图像数据，以缩小搜索范围并加快感知。</p>
 <p>然后通过检测网络馈送已过滤的点云，输出用于构建围绕对象的三维边界框。</p>
 <p>最后使用被称为检测跟踪关联的算法来跨时间步识别单个对象，该算法先保留在每个时间步要跟踪的对象列表，然后在下一个时间步中找到每个对象的最佳匹配。</p>
 <p><img src="roi.jpg" alt=""></p>
 <p>对于交通信号灯的分类，Apollo先使用高精度地图来确定前方是否存在交通信号灯。如果前方有交通信号灯，则高精度地图会返回灯的位置。后续根据位置，摄像头搜索范围，使用检测网络对图像中的灯进行定位，然后从较大的图像中提取交通信号灯。将裁剪的交通灯图像提供给分类网络以确定灯颜色，如果有许多灯则系统需要选择哪些灯与其车道相关。</p>
 <p><img src="detection.jpg" alt=""></p>
 <p>Apollo使用 <strong>YOLO 网络</strong>来检测车道线、动态物体(其中包括车辆、卡车、骑自行车的人、行人)。</p>
-<h3 id="感知融合策略"><a href="#感知融合策略" class="headerlink" title="感知融合策略"></a>感知融合策略</h3><p>Apollo使用激光雷达和雷达来检测障碍物，用于融合输出的主要算法为<strong>卡尔曼滤波</strong>。卡尔曼滤波有两个步骤：第一步为预测状态，第二步是更新测量结果。</p>
+<h2 id="感知融合策略"><a href="#感知融合策略" class="headerlink" title="感知融合策略"></a>感知融合策略</h2><p>Apollo使用激光雷达和雷达来检测障碍物，用于融合输出的主要算法为<strong>卡尔曼滤波</strong>。卡尔曼滤波有两个步骤：第一步为预测状态，第二步是更新测量结果。</p>
 <p>有两种测量结果更新步骤：同步和异步。同步融合同时更新来自不同传感器的测量结果，而异步融合则逐个更新所收到的传感器测量结果。传感器融合可提高感知性能，因为各传感器相辅相成，融合也可以减少跟踪误差。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
 <li><a href="https://apollo.auto/devcenter/coursevideo_cn.html" target="_blank" rel="noopener">优达学城-无人驾驶第一课：从Apollo起步</a></li>
@@ -368,7 +368,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快速回忆"><span class="nav-number">1.</span> <span class="nav-text">快速回忆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感知"><span class="nav-number">2.</span> <span class="nav-text">感知</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检测和分类"><span class="nav-number">2.1.</span> <span class="nav-text">检测和分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跟踪"><span class="nav-number">2.2.</span> <span class="nav-text">跟踪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分割"><span class="nav-number">2.3.</span> <span class="nav-text">分割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Apollo感知"><span class="nav-number">2.4.</span> <span class="nav-text">Apollo感知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感知融合策略"><span class="nav-number">2.5.</span> <span class="nav-text">感知融合策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快速回忆"><span class="nav-number">1.</span> <span class="nav-text">快速回忆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感知"><span class="nav-number">2.</span> <span class="nav-text">感知</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检测和分类"><span class="nav-number">2.1.</span> <span class="nav-text">检测和分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跟踪"><span class="nav-number">2.2.</span> <span class="nav-text">跟踪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分割"><span class="nav-number">2.3.</span> <span class="nav-text">分割</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apollo感知"><span class="nav-number">3.</span> <span class="nav-text">Apollo感知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感知融合策略"><span class="nav-number">4.</span> <span class="nav-text">感知融合策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
