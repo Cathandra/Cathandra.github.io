@@ -52,34 +52,31 @@
   };
 </script>
 
-  <meta name="description" content="近来学习数据库系统概论的条件搜索时，老师讲了一些搜索时匹配字符串的方法，感觉如果有正则表达式效率应该会高很多。所以去学习了一下，希望不管是用于数据库查询还是在前端方面都能够提高效率。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="正则表达式">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;10&#x2F;27&#x2F;regex&#x2F;index.html">
+  <meta name="description" content="GIVE IT ALL YOU&#39;VE GOT.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cathandra&#39;s Blog">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;page&#x2F;4&#x2F;index.html">
 <meta property="og:site_name" content="Cathandra&#39;s Blog">
-<meta property="og:description" content="近来学习数据库系统概论的条件搜索时，老师讲了一些搜索时匹配字符串的方法，感觉如果有正则表达式效率应该会高很多。所以去学习了一下，希望不管是用于数据库查询还是在前端方面都能够提高效率。">
+<meta property="og:description" content="GIVE IT ALL YOU&#39;VE GOT.">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2017-10-27T13:51:39.000Z">
-<meta property="article:modified_time" content="2022-03-24T13:19:53.266Z">
 <meta property="article:author" content="Cathandra">
-<meta property="article:tag" content="regex">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2017/10/27/regex/">
+<link rel="canonical" href="http://yoursite.com/page/4/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: false,
-    isPost: true,
+    isHome: true,
+    isPost: false,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>正则表达式 | Cathandra's Blog</title>
+  <title>Cathandra's Blog</title>
   
 
 
@@ -205,11 +202,11 @@
             
 
   <div class="posts-expand">
-      
+        
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/27/regex/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/javaLearning1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.png">
@@ -222,7 +219,8 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          正则表达式
+          
+            <a href="/2017/05/19/javaLearning1/" class="post-title-link" itemprop="url">Java初学习之 Java基础</a>
         </h1>
 
         <div class="post-meta">
@@ -232,7 +230,7 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-10-27 21:51:39" itemprop="dateCreated datePublished" datetime="2017-10-27T21:51:39+08:00">2017-10-27</time>
+              <time title="Created: 2017-05-19 00:00:00" itemprop="dateCreated datePublished" datetime="2017-05-19T00:00:00+08:00">2017-05-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,13 +245,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
 
         </div>
       </header>
@@ -264,108 +255,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>近来学习数据库系统概论的条件搜索时，老师讲了一些搜索时匹配字符串的方法，感觉如果有正则表达式效率应该会高很多。所以去学习了一下，希望不管是用于数据库查询还是在前端方面都能够提高效率。</p>
-<a id="more"></a>
-
-<h2 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h2><ul>
-<li>普通字符</li>
-<li>元字符：<ul>
-<li><code>\</code>：向后引用之意</li>
-<li><code>^</code>：与字符串开始的地方匹配</li>
-<li><code>$</code>：与字符串结束的地方匹配</li>
-<li><code>*</code>：匹配*前面的字符任意次<br>e.g.<code>zo*</code>指匹配第一个字符为z，后面有[0,+∞)个o的字符串，z、zoo、zoooooooo…</li>
-<li><code>+</code>：至少匹配+前面的字符一次<br>e.g.<code>zo+</code>指匹配第一个字符为z，后面有[1,+∞)个o的字符串，zo、zoo，但不可为z；</li>
-<li><code>？</code>：匹配？前的字符0次或者1次<br>e.g.<code>z(o)?</code>指匹配z或者zo；</li>
-<li>重复操作：</li>
-<li><code>{n}</code>：表达式重复准确的n次​<br>e.g.<code>o{2}</code>，指匹配含有’oo’的字符串,特别的，o{1}相当于<code>o*</code>；</li>
-<li><code>{n,}</code>：表达式至少重复n次<br>e.g.<code>o{2}</code>，匹配含有‘oo’或‘oooo’……特别的，<code>o{1,}</code>相当于<code>o+</code>,<code>o{0,}</code>相当于<code>o？</code>；</li>
-<li><code>{m,n}</code>：表达式至少重复m次，最多重复n次<br>贪婪模式 （默认）：尽可能少的匹配所搜索的字符串<br>非贪婪模式 ：尽可能多的匹配所搜索的字符串</li>
-</ul>
-</li>
-<li>标准字符集合<ul>
-<li><code>\d</code>：任意一个数字，等价于<code>[0~9]</code><br>d refers to digital(数字)</li>
-<li><code>\D</code>：非数字字符，等价于<code>[^0-9]</code></li>
-<li><code>\w</code>：任意一个字母、数字或下划线，A<del>Z、a</del>z、0~9和_，等价于[a-zA-Z_0-9]</li>
-<li><code>\s</code>：任意空白符，包括空格、制表符、换行符<br>s refers to space(空格)</li>
-<li><code>.</code>：小数点可以匹配任意一个字符<br>换行除外（如果要匹配包括”\n”在内的所有字符，一般用[\s\S]）</li>
-<li><code>\b</code>：匹配一个单词的边界<br><code>er\b</code>可匹配player，但是不匹配verb</li>
-<li><code>\B</code>：匹配非单词边界处<br><code>er\B</code>可匹配verb，但是不匹配player</li>
-</ul>
-</li>
-<li>简单转义字符</li>
-<li>自定义字符集合[]：匹配包含在[]的其中一个条件<br>e.g.<br><code>[ab5@]</code>：匹配”a”或”b”或”5”或”@”<br><code>[^abc]</code>：匹配a、b、c之外的任意字符​<br><code>[f-k]</code>：匹配“f”到”k”之间的字符<br><code>[^A-F0-3]</code>：匹配“A”-“F”,”0”-“3”之外的任意一个字符</li>
-</ul>
-<h2 id="选择符和分组"><a href="#选择符和分组" class="headerlink" title="选择符和分组"></a>选择符和分组</h2><ul>
-<li><code>|</code>  分支结构​<ul>
-<li>左右表达式之间“或”关系，匹配左边或右边<br><code>f|zo</code>指f或zo，而<code>[zf]o</code>指zo或fo</li>
-</ul>
-</li>
-<li><code>()</code>捕获组<ul>
-<li>在被修饰匹配次数的时候，括号中的表达式可以作为整体被修饰</li>
-<li>取匹配结果的时候，括号中的表达式匹配到的内容可以被单独得到</li>
-<li>每一对括号会分配一个编号，使用（）的捕获根据左括号的顺序从1开始自动编号。捕获编号为零的第一个捕获是整个正则表达式模式匹配的文本</li>
-<li>反向引用：通过反向引用，可以对分组已捕获的字符串进行引用。</li>
-</ul>
-</li>
-<li><code>(?:Expression)</code> 非捕获组<ul>
-<li>一些表达式中，不得不使用<code>()</code>，但又不需要保存<code>()</code>中子表达式匹配的内容，这时可以用非捕获组来抵消<code>()</code>带来的副作用。</li>
-</ul>
-</li>
-</ul>
-<h2 id="匹配模式"><a href="#匹配模式" class="headerlink" title="匹配模式"></a>匹配模式</h2><ul>
-<li><code>IGNORECASE</code> 忽略大小写模式<ul>
-<li>匹配时忽略大小写</li>
-<li>默认是区分大小写的</li>
-</ul>
-</li>
-<li><code>SINGLELINE</code> 单行模式<ul>
-<li>整个文本看作一个字符串，只有一个开头一个结尾</li>
-<li>使小数点”.”可以匹配包含换行符(\n)在内的任意字符</li>
-</ul>
-</li>
-<li><code>MULTILINE</code> 多行模式<ul>
-<li>每行都是一个字符串</li>
-<li>在多行模式下，如果需要仅匹配字符串开始和结束位置，可以使用\A和\Z</li>
-</ul>
-</li>
-</ul>
-<h2 id="零宽断言"><a href="#零宽断言" class="headerlink" title="零宽断言"></a>零宽断言</h2><ul>
-<li><code>(?=exp)</code>：断言自身出现的位置的后面能匹配表达式exp</li>
-<li><code>(?!exp)</code>：断言自身出现的位置的后面不能匹配表达式exp</li>
-<li><code>(?&lt;=exp)</code>：断言自身出现的位置的前面能匹配表达式exp</li>
-<li><code>(?&lt;!exp)</code>：断言自身出现的位置的前面不能匹配表达式exp</li>
-</ul>
-
+          <p>Java学习的课堂笔记。现在看来，这些笔记实在是流于琐碎，也没能很好地抓住学习重点（学校考试方法是闭卷手写10个程序），实在是只顾着记背语法了。大学一年级初学习时还没有转专业，也没有想到会开这个博客，回头看看当时的笔记还是觉得很奇妙。<br>现在把这些笔记放上来，方便在日后的学习中参考经验、纠正错误。</p>
+<h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2><p>按精度从“低”到“高”排列：<br>byte  short  char  int  long  float  double<br>（低-高自动转换，高-低需强制转换）</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/05/19/javaLearning1/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
     </div>
 
     
     
     
-
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/regex/" rel="tag"># regex</a>
-          </div>
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-next post-nav-item">
-                <a href="/2017/10/26/select/" rel="next" title="数据查询之 单表查询">
-                  <i class="fa fa-chevron-left"></i> 数据查询之 单表查询
-                </a>
-            </div>
-
-            <span class="post-nav-divider"></span>
-
-            <div class="post-nav-prev post-nav-item">
-                <a href="/2017/11/02/selectMulti/" rel="prev" title="数据查询之 多表查询">
-                  数据查询之 多表查询 <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
@@ -373,10 +281,15 @@
 
   </div>
 
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
+
+
 
           </div>
           
-    <div class="comments" id="gitalk-container"></div>
 
         </div>
           
@@ -401,7 +314,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符"><span class="nav-number">1.</span> <span class="nav-text">字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择符和分组"><span class="nav-number">2.</span> <span class="nav-text">选择符和分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匹配模式"><span class="nav-number">3.</span> <span class="nav-text">匹配模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#零宽断言"><span class="nav-number">4.</span> <span class="nav-text">零宽断言</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -556,23 +468,6 @@
 
   
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
-
-<script>
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
-    var gitalk = new Gitalk({
-      clientID: '9cd5b6812247a5d05a58',
-      clientSecret: 'f88f192ed7d8d7199dcc9b59e84fd53e85320362',
-      repo: 'Talk',
-      owner: 'Cathandra',
-      admin: ['Cathandra'],
-      id: 'a3e151b420b05ade101ceffeb1f18ff8',
-        language: '',
-      distractionFreeMode: 'true'
-    });
-    gitalk.render('gitalk-container');
-  }, window.Gitalk);
-</script>
 
 </body>
 </html>
