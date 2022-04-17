@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fav.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fav.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="Cathandra's Blog" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="快速回忆 规划包括哪几个部分？每部分通过哪些方式解决问题？  -解释Frenet坐标系、？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apollo自动驾驶入门课程(六)规划">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;15&#x2F;apollo-routing&#x2F;index.html">
+<meta property="og:site_name" content="Cathandra&#39;s Blog">
+<meta property="og:description" content="快速回忆 规划包括哪几个部分？每部分通过哪些方式解决问题？  -解释Frenet坐标系、？">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;15&#x2F;apollo-routing&#x2F;AStar.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;15&#x2F;apollo-routing&#x2F;trajectory.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;15&#x2F;apollo-routing&#x2F;cost.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;15&#x2F;apollo-routing&#x2F;st.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;15&#x2F;apollo-routing&#x2F;st.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;15&#x2F;apollo-routing&#x2F;lattice">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;15&#x2F;apollo-routing&#x2F;generation.jpg">
+<meta property="article:published_time" content="2022-03-15T08:22:53.000Z">
+<meta property="article:modified_time" content="2022-04-17T19:01:38.115Z">
+<meta property="article:author" content="Cathandra">
+<meta property="article:tag" content="Automation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;15&#x2F;apollo-routing&#x2F;AStar.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2022/03/15/apollo-routing/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Apollo自动驾驶入门课程(六)规划 | Cathandra's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Cathandra's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/15/apollo-routing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.png">
+      <meta itemprop="name" content="Cathandra">
+      <meta itemprop="description" content="GIVE IT ALL YOU'VE GOT.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cathandra's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Apollo自动驾驶入门课程(六)规划
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-15 16:22:53" itemprop="dateCreated datePublished" datetime="2022-03-15T16:22:53+08:00">2022-03-15</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="快速回忆"><a href="#快速回忆" class="headerlink" title="快速回忆"></a>快速回忆</h2><ol>
+<li><p>规划包括哪几个部分？每部分通过哪些方式解决问题？</p>
+<p> -解释Frenet坐标系、？</p>
+</li>
+</ol>
+<a id="more"></a>
+
+<p>参考答案：</p>
+<blockquote>
+<p><strong>端到端路径-速度解耦规划</strong>包括路线规划和轨迹规划。</p>
+<p>假设我们正在路上行驶，感知系统观察到一辆缓慢行驶的车辆离我们越来越近。</p>
+<p>首先，在这辆车的周围生成多条候选路线，使用成本函数对这些候选路径进行评估并选择成本最低的路径；</p>
+<p>然后，使用 ST 图来进行速度规划，根据其他车辆随时间变化的位置阻挡了 ST 图的部分区域。优化引擎可帮助确定该图的最佳速度曲线，该曲线受制于约束和成本函数。我们可以使用二次规划让路径和速度曲线变平滑；</p>
+<p>最后，将路径和速度曲线合并构建轨迹。这里的轨迹在速度较快时为红色，在速度较慢时为蓝色。我们使用该轨迹来安全地绕开其他车辆并继续我们的旅程。</p>
+</blockquote>
+<h2 id="规划"><a href="#规划" class="headerlink" title="规划"></a>规划</h2><p>规划指通过一定的规则，找到车辆前往目的地的地图路线。Apollo的解决方案称为：端到端路径-速度解耦规划，其分成两个部分：<strong>路线规划</strong>与<strong>轨迹规划</strong>。路线规划根据地图生成可行使路径；而找到避免碰撞和保持舒适度的可执行轨迹。</p>
+<h3 id="路线规划"><a href="#路线规划" class="headerlink" title="路线规划"></a>路线规划</h3><p>规划的第一步是路线导航，侧重于研究如何从地图上的A点前往B点。在路线导航时，将地图数据作为输入，并输出可行驶路径。</p>
+<p>路线规划使用三个输入：地图、当前位置和目的地。</p>
+<h4 id="将地图转为图形"><a href="#将地图转为图形" class="headerlink" title="将地图转为图形"></a>将地图转为图形</h4><p>寻找最佳路线时，地图被抽象为图。起始地和目标地被设为节点 (node)，可行驶路线看成边 (edge)。</p>
+<h4 id="路径查找：A"><a href="#路径查找：A" class="headerlink" title="路径查找：A*"></a>路径查找：A*</h4><p>A*算法用变量g和h表示每个成本。g值为开始节点前往候选节点的成本，h值为候选节点前往目的地的估计成本或启发式成本。</p>
+<p>对每个候选节点，我们通过添加g值和h值来计算总和f值。最佳候选节点是总成本f最小的节点。</p>
+<p><img src="AStar.jpg" alt=""></p>
+<p>每当抵达新节点时，重复此过程来选择下一个候选节点，并总是选择尚未访问过且具有最小f值的节点。</p>
+<h3 id="轨迹规划"><a href="#轨迹规划" class="headerlink" title="轨迹规划"></a>轨迹规划</h3><p>轨迹生成的目标是生成一系列路径点所定义的轨迹，每个路径点分配了一个速度、角度和时间戳等。</p>
+<h4 id="轨迹选择"><a href="#轨迹选择" class="headerlink" title="轨迹选择"></a>轨迹选择</h4><p>由于移动的障碍物可能会暂时阻挡部分路段，轨迹中的每个路径点都有时间戳。将时间戳与预测模块的输出相结合，以确保计划通过时，轨迹上的每个路径点均未被占用。每个路径点还被指定了一个速度，用于确保车辆按时到达每个路径点。</p>
+<p>这些时间戳和空间上的两个维度（2D position）共同创建了一个三维轨迹（3D  Trajectory）。</p>
+<p><img src="trajectory.jpg" alt=""></p>
+<p>除了避免碰撞这一约束，现实世界中的规划还面临多种<strong>约束</strong>。比如：① 要让乘客感到舒适，所以路径点之间的过渡以及速度的任何变化都必须平滑；② 路径点对车辆应实际可行，例如高速行驶的汽车不能立即做180度转弯；③ 轨迹应符合交通法律法规。</p>
+<p>符合不发生碰撞、行驶舒适、可行且合法的轨迹可能有多条，因此需要构建<strong>“成本函数”</strong>，将所有这些缺陷聚合为单个数字，最后选用成本最低的轨迹。</p>
+<p>轨迹“成本”由各种犯规处罚组成，例如：偏离道路中心，有可能产生碰撞，速度限制，轨迹的曲率和加速度让乘客感到不舒服等。不同的环境中可能使用不同的成本函数</p>
+<p><img src="cost.jpg" alt=""></p>
+<h4 id="路径的速度曲线"><a href="#路径的速度曲线" class="headerlink" title="路径的速度曲线"></a>路径的速度曲线</h4><p>一个被称为“ST 图”的工具可以帮助设计和选择速度曲线。在ST图中，s表示车辆的纵向位移、t表示时间。ST 图上的曲线是对车辆运动的描述，因为它说明了车辆在不同时间的位置。由于速度是位置变化的速率，所以可以通过查看曲线的斜率从 ST 图上推断速度。斜坡越陡则表示在更短的时间段内有更大的移动，对应更快的速度。</p>
+<p><img src="st.png" alt=""></p>
+<p>将 ST 图离散为多个单元格，在 ST 图中可以将障碍物绘制为在特定时间段内阻挡道路的某些部分的矩形，为避免碰撞，速度曲线不得与此矩形相交。</p>
+<p>尽管离散化使问题更容易解决，但该解决方案生成的轨迹并不平滑。</p>
+<p><img src="st.jpg" alt=""></p>
+<p>为了将离散解决方案转换为平滑轨迹，可使用“二次规划”技术（Quadratic Programming)。二次规划将平滑的非线性曲线与这些分段式线性段拟合。</p>
+<h4 id="轨迹生成"><a href="#轨迹生成" class="headerlink" title="轨迹生成"></a>轨迹生成</h4><p>一种轨迹生成方法是：Lattice 规划，通过使用 Frenet 坐标可以将环境投射到纵轴和横轴上，目标是生成三维轨迹。Lattice 规划将三维问题分解成两个单独的二维问题，其中一个二维轨迹是具有时间戳的纵向轨迹称之为 ST 轨迹，另一个二维轨迹是相对于纵向轨迹的横向偏移称之为 SL 轨迹。</p>
+<p><img src="lattice" alt=""></p>
+<p>Lattice 规划具有两个步骤，即先分别建立 ST 和 SL 轨迹，然后将它们合并为生成纵向和横向二维轨迹。</p>
+<h5 id="ST-轨迹"><a href="#ST-轨迹" class="headerlink" title="ST 轨迹"></a>ST 轨迹</h5><p>根据情况可以将状态分成 3 组：<strong>巡航</strong> 、<strong>跟随</strong>、<strong>停止</strong>：</p>
+<ul>
+<li>巡航意味着车辆将在完成规划步骤后定速行驶。实际上在对图上的点进行采样，图中在时间 t 以 s 点的速度巡航，对于这种模式，所有最终状态的加速度均为零；</li>
+<li>跟随车辆情况下，要对位置和时间状态进行采样，并尝试在时间t出现在某辆车后面。在跟随车辆时，需要与前方的车保持安全距离，这时速度和加速度将取决于要跟随的车辆，即在这种模式下，速度和加速度都会进行修正；</li>
+<li>停止模式下只需对汽车何时何地停止进行抽样，这里速度和加速度会被修正为 0 。</li>
+</ul>
+<h5 id="SL轨迹"><a href="#SL轨迹" class="headerlink" title="SL轨迹"></a>SL轨迹</h5><p>SL规划中，无论车辆进入怎样的终止状态，车辆都应该稳定地与车道中心线对齐。</p>
+<p>为了达到这种终止状态，车的朝向和位置的一阶和二阶导数都应该为零。这意味着车辆既不是横向移动的，那是一阶导数；也不是横向加速，那是二阶导数。这意味着车辆正沿着车道直行。</p>
+<h5 id="坐标转换"><a href="#坐标转换" class="headerlink" title="坐标转换"></a>坐标转换</h5><p>一旦同时拥有了 ST 和 SL 轨迹，就需要将它们重新转换为笛卡尔坐标系，将它们相结合构建由二维路径点和一维时间戳组成的三维轨迹。</p>
+<p>ST 轨迹是随时间变化的纵向位移，SL 轨迹是纵向轨迹上每个点的横向偏移。由于两个轨迹都有纵坐标 S，所以可以通过将其 S 值进行匹配来合并轨迹。</p>
+<p><img src="generation.jpg" alt=""></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a href="https://apollo.auto/devcenter/coursevideo_cn.html" target="_blank" rel="noopener">优达学城-无人驾驶第一课：从Apollo起步</a></li>
+<li><a href="https://mp.weixin.qq.com/s?__biz=MzI1NjkxOTMyNQ==&mid=2247485382&idx=1&sn=de753eebdf4a49158524a34e0951ff80&chksm=ea1e15b4dd699ca2e4f62fd27589497f65392bb10ee7af1261782d4af07e4ed97a5b8eab0dc7&scene=178&cur_album_id=1452705199189327878#rd" target="_blank" rel="noopener">Apollo自动驾驶入门课程第⑦讲 — 规划（上）</a>、<a href="https://mp.weixin.qq.com/s?__biz=MzI1NjkxOTMyNQ==&mid=2247485402&idx=1&sn=fd499d156ba2aae44503d8295fb8a428&chksm=ea1e15a8dd699cbe081fc470dcf9406ca7694e8df1a28b0448fcb7be8f822c85ce4654a5b3d7&scene=178&cur_album_id=1452705199189327878#rd" target="_blank" rel="noopener">第⑧讲 — 规划（下）</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Automation/" rel="tag"># Automation</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2022/03/02/apollo-perception/" rel="next" title="Apollo自动驾驶入门课程(四)感知">
+                  <i class="fa fa-chevron-left"></i> Apollo自动驾驶入门课程(四)感知
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快速回忆"><span class="nav-number">1.</span> <span class="nav-text">快速回忆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规划"><span class="nav-number">2.</span> <span class="nav-text">规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路线规划"><span class="nav-number">2.1.</span> <span class="nav-text">路线规划</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#将地图转为图形"><span class="nav-number">2.1.1.</span> <span class="nav-text">将地图转为图形</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路径查找：A"><span class="nav-number">2.1.2.</span> <span class="nav-text">路径查找：A*</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#轨迹规划"><span class="nav-number">2.2.</span> <span class="nav-text">轨迹规划</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#轨迹选择"><span class="nav-number">2.2.1.</span> <span class="nav-text">轨迹选择</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路径的速度曲线"><span class="nav-number">2.2.2.</span> <span class="nav-text">路径的速度曲线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#轨迹生成"><span class="nav-number">2.2.3.</span> <span class="nav-text">轨迹生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ST-轨迹"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">ST 轨迹</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SL轨迹"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">SL轨迹</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#坐标转换"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">坐标转换</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cathandra"
+      src="/images/head.png">
+  <p class="site-author-name" itemprop="name">Cathandra</p>
+  <div class="site-description" itemprop="description">GIVE IT ALL YOU'VE GOT.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:cathandra@163.com" title="E-Mail &rarr; mailto:cathandra@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cathandra</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '9cd5b6812247a5d05a58',
+      clientSecret: 'f88f192ed7d8d7199dcc9b59e84fd53e85320362',
+      repo: 'Talk',
+      owner: 'Cathandra',
+      admin: ['Cathandra'],
+      id: '95e3233f396059c396b9cad157aedf12',
+        language: '',
+      distractionFreeMode: 'true'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
