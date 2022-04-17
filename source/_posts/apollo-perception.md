@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Apollo自动驾驶入门课程(四)感知"
-date: 2022-01-12 14:16:28
+date: 2022-03-02 09:16:28
 tags:
 	- Automation
 categories: [] 
@@ -83,4 +83,3 @@ Apollo使用激光雷达和雷达来检测障碍物，用于融合输出的主�
 
 1. [优达学城-无人驾驶第一课：从Apollo起步](https://apollo.auto/devcenter/coursevideo_cn.html)
 2. [Apollo自动驾驶入门课程第④讲 — 感知（上）](https://mp.weixin.qq.com/s?__biz=MzI1NjkxOTMyNQ==&mid=2247485321&idx=1&sn=6644ab23e2a733d3ea25f6c4e6052478&chksm=ea1e15fbdd699ced66598e976910f9e870ac8209cb6c14ba8d184939529be046c4ee65534589&scene=178&cur_album_id=1452705199189327878#rd)、[第⑤讲 — 感知（下）](https://mp.weixin.qq.com/s?__biz=MzI1NjkxOTMyNQ==&mid=2247485341&idx=1&sn=ddbb5805bfc6842f9d05e4cbf9aa43bb&chksm=ea1e15efdd699cf91ca23eb7fbb51b0314dcac3cc54785e237fbe040b1f900fbb6f76596500d&scene=178&cur_album_id=1452705199189327878#rd)
-3. [Apollo 高精地图技术与应用](https://mp.weixin.qq.com/s?__biz=MzI1NjkxOTMyNQ==&mid=2247483829&idx=1&sn=e74e3ea5493363ff8bd5995e7bf275ba&scene=21#wechat_redirect)
